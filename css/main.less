@@ -10,6 +10,7 @@ header {
 	width:100%;
 	display: table;
 	font-size: 3em;
+    z-index: 1;
 -webkit-transition: all @headerTransitionSpeed ease;
 -moz-transition: all @headerTransitionSpeed  ease;
 -o-transition: all @headerTransitionSpeed  ease;
@@ -33,6 +34,45 @@ header {
 
 .header_color_letters {
     color:#006600;
+}
+
+#social_logo_container {
+    height:100%;
+}
+.social_logos {
+    position: absolute;
+    bottom:0.2em;
+    left:0.8em;
+    width:200px;
+}
+.s_logo {     
+    background-size: auto auto;
+    height:0.6em;
+    width:0.6em;
+    float:left;
+    margin-right: 0.3em;
+}
+
+.s_logo:hover {
+    cursor: pointer;
+}
+
+#fb_logo {
+    background: url(../images/svg/facebook_logo.svg);
+    background-repeat:no-repeat;
+    background-position:center;
+}
+
+#twitter_logo {
+    background: url(../images/svg/twitter_logo.svg);
+    background-repeat:no-repeat;
+    background-position:center;
+}
+
+#google_logo {
+    background: url(../images/svg/google_logo.svg);
+    background-repeat:no-repeat;
+    background-position:center;
 }
 
 /* CSS */
