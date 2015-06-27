@@ -2,6 +2,14 @@
 
 @headerTransitionSpeed: 0.5s;
 
+svg {
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    height:100%;
+}
 
 header {
 	background-color:#f8f9fb;
@@ -36,44 +44,36 @@ header {
     color:#006600;
 }
 
-#social_logo_container {
+#social_logo_container, #impressum_logo_container {
     height:100%;
 }
-.social_logos {
+.social_logos, {
     position: absolute;
     bottom:0.2em;
     left:0.8em;
     width:200px;
 }
-.s_logo {     
-    background-size: auto auto;
+.impressum_logos {
+    position: absolute;
+    bottom:0.2em;
+    right:0.8em;
+    width:200px;
+}
+.s_logo, .i_logo {     
     height:0.6em;
     width:0.6em;
     float:left;
-    margin-right: 0.3em;
+    margin-right: 0.5em;
 }
 
-.s_logo:hover {
+.i_logo {     
+    float:right !important;
+}
+
+.s_logo:hover, .i_logo {
     cursor: pointer;
 }
 
-#fb_logo {
-    background: url(../images/svg/facebook_logo.svg);
-    background-repeat:no-repeat;
-    background-position:center;
-}
-
-#twitter_logo {
-    background: url(../images/svg/twitter_logo.svg);
-    background-repeat:no-repeat;
-    background-position:center;
-}
-
-#google_logo {
-    background: url(../images/svg/google_logo.svg);
-    background-repeat:no-repeat;
-    background-position:center;
-}
 
 /* CSS */
 .hsContainer {

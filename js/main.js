@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+
 	// Initialize Skrollr for parallax scrolling
 	var s = skrollr.init({
         render: function(data) {
