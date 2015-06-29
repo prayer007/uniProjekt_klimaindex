@@ -1,4 +1,8 @@
+
+ var originColor = "";
+
 $(document).ready(function() {
+
 
     //### Load svg files for the social media icons ###
 
@@ -11,6 +15,9 @@ $.get("images/svg/facebook_logo.svg", null,
         var pageNode = $("#fb_logo");
 
         pageNode.html(docNode);
+
+        originColor = $("svg" + " path").css("fill"); // Get the color of the origin svg to set it in mousout
+        originColor = rgb2hex(originColor);
         },
         'xml');
 
@@ -61,5 +68,14 @@ $.get("images/svg/impressum_logo.svg", null,
         pageNode.html(docNode);
         },
         'xml');
+
+// Convert rgb to hex
+function rgb2hex(rgb){
+ rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+ return "#" +
+  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
+}
 
 });

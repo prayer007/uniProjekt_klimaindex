@@ -20,4 +20,50 @@ $(document).ready(function() {
     }
 });
 
+
+
+
+// #######################################
+// ##  Animate the social media logos   ##
+// #######################################
+
+    // Facebook Logo
+    animateSvgLogo("#fb_logo", "#3B5998")
+
+    // Twitter Logo
+    animateSvgLogo("#twitter_logo", "#2AA9E0")
+
+    // Google Logo
+    animateSvgLogo("#google_logo", "#DD4B39")
+
+    // About Logo
+    animateSvgLogo("#about_logo", "#000000")
+
+    // Impressum Logo
+    animateSvgLogo("#impressum_logo", "#000000")
+
+
+// Function to animte the svg logo
+
+var complete = true;
+function animateSvgLogo(id, color) {
+
+    $(id).hover(function() {
+
+        if(complete === true) { // Only start a new animation if the last finished
+            complete = false;
+
+    $(id).find("path").velocity({
+        fill: color
+    }, {
+        complete: function() {complete = true} })
+
+    }},
+    function() {
+        $(id).find("path").velocity({
+        fill: originColor // Variable got from fileLoader.js
+        })
+    });
+}
+
 });

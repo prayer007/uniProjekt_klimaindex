@@ -1,15 +1,42 @@
 /* LESS Document */
 
 @headerTransitionSpeed: 0.5s;
+@logoColorTransSpeed: 0.5s;
 
-svg {
-    position: relative;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
+#header svg {
     height:100%;
 }
+
+/*#header svg path{
+    transition: fill @logoColorTransSpeed ease;
+    -webkit-transition: fill @logoColorTransSpeed ease;
+    -moz-transition: fill @logoColorTransSpeed ease;
+    -o-transition: fill @logoColorTransSpeed ease;
+}
+
+#header #fb_logo svg:hover path{
+    fill: #3B5998;
+    transition: fill @logoColorTransSpeed ease;
+    -webkit-transition: fill @logoColorTransSpeed ease;
+    -moz-transition: fill @logoColorTransSpeed ease;
+    -o-transition: fill @logoColorTransSpeed ease;
+}
+
+#header #twitter_logo svg:hover path{
+    fill: #2AA9E0;
+    transition: fill @logoColorTransSpeed ease;
+    -webkit-transition: fill @logoColorTransSpeed ease;
+    -moz-transition: fill @logoColorTransSpeed ease;
+    -o-transition: fill @logoColorTransSpeed ease;
+}
+
+#header #google_logo svg:hover path{
+    fill: #DD4B39;
+    transition: fill @logoColorTransSpeed ease;
+    -webkit-transition: fill @logoColorTransSpeed ease;
+    -moz-transition: fill @logoColorTransSpeed ease;
+    -o-transition: fill @logoColorTransSpeed ease;
+}*/
 
 header {
 	background-color:#f8f9fb;
