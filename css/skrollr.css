@@ -1,12 +1,5 @@
 /* CSS Document */
 
-html, body {
-    margin:0;
-    padding:0;
-    height: 100% !important;
-    min-height: 100% !important;
-    font-family: Lora;
-}
 .hsContainer {
     display: table;
     table-layout: fixed;
@@ -37,7 +30,7 @@ html, body {
 	background-image:url('../images/Our-Planet-planet-earth.jpg')
 }
 
-/* CSS - Slide 2 */
+/* Slide 2 */
 #slide-2 .bcg {
     background: none;
     background-color: #010101;
@@ -45,8 +38,13 @@ html, body {
     text-align: center
 }
 
-/* Slide 1 */
+/* Slide 3 */
 #slide-3 .bcg {
     background-image:url('../images/melting-ice.jpg')
+}
+
+/* Slide 4 */
+#slide-4 .bcg {
+    background-image:url('../images/planetearth_wild.jpg')
 }
 

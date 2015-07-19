@@ -1,5 +1,35 @@
 /* LESS Document */
 
+/*###################################################
+###  FadeIn effects for the slide text contents   ###
+#####################################################*/
+
+.fadeIns {
+-webkit-transition: opacity 1200ms cubic-bezier(0.295, 0.785, 0.285, 0.985);
+   -moz-transition: opacity 1200ms cubic-bezier(0.295, 0.785, 0.285, 0.985);
+     -o-transition: opacity 1200ms cubic-bezier(0.295, 0.785, 0.285, 0.985);
+        transition: opacity 1200ms cubic-bezier(0.295, 0.785, 0.285, 0.985); /* custom */
+
+-webkit-transition-timing-function: cubic-bezier(0.295, 0.785, 0.285, 0.985);
+   -moz-transition-timing-function: cubic-bezier(0.295, 0.785, 0.285, 0.985);
+     -o-transition-timing-function: cubic-bezier(0.295, 0.785, 0.285, 0.985);
+        transition-timing-function: cubic-bezier(0.295, 0.785, 0.285, 0.985); /* custom */
+}
+
+
+html, body {
+    margin:0;
+    padding:0;
+    height: 100% !important;
+    min-height: 100% !important;
+    font-family: Ubuntu;
+}
+
+p {
+    margin: 0;
+    padding:0;
+}
+
 @headerTransitionSpeed: 0.5s;
 @logoColorTransSpeed: 0.5s;
 
@@ -7,49 +37,22 @@
     height:100%;
 }
 
-/*#header svg path{
-    transition: fill @logoColorTransSpeed ease;
-    -webkit-transition: fill @logoColorTransSpeed ease;
-    -moz-transition: fill @logoColorTransSpeed ease;
-    -o-transition: fill @logoColorTransSpeed ease;
-}
-
-#header #fb_logo svg:hover path{
-    fill: #3B5998;
-    transition: fill @logoColorTransSpeed ease;
-    -webkit-transition: fill @logoColorTransSpeed ease;
-    -moz-transition: fill @logoColorTransSpeed ease;
-    -o-transition: fill @logoColorTransSpeed ease;
-}
-
-#header #twitter_logo svg:hover path{
-    fill: #2AA9E0;
-    transition: fill @logoColorTransSpeed ease;
-    -webkit-transition: fill @logoColorTransSpeed ease;
-    -moz-transition: fill @logoColorTransSpeed ease;
-    -o-transition: fill @logoColorTransSpeed ease;
-}
-
-#header #google_logo svg:hover path{
-    fill: #DD4B39;
-    transition: fill @logoColorTransSpeed ease;
-    -webkit-transition: fill @logoColorTransSpeed ease;
-    -moz-transition: fill @logoColorTransSpeed ease;
-    -o-transition: fill @logoColorTransSpeed ease;
-}*/
+@headerHeight: 110px;
 
 header {
 	background-color:#f8f9fb;
-	height: 110px;
+	height: @headerHeight;
 	position: fixed;
 	width:100%;
 	display: table;
+    font-family: Lora;
 	font-size: 3em;
     z-index: 1;
 -webkit-transition: all @headerTransitionSpeed ease;
 -moz-transition: all @headerTransitionSpeed  ease;
 -o-transition: all @headerTransitionSpeed  ease;
 -ms-transition: all @headerTransitionSpeed ease;
+visibility: hidden;
 }
 
 #header_content {
@@ -128,9 +131,10 @@ header {
     height: 100%;
     width: 100%;
 }
+
 /* Slide 1 */
 #slide-1 .bcg {
-	background-image:url('../images/Our-Planet-planet-earth.jpg')
+	background-image:url('../images/Our-Planet-planet-earth.jpg');
 }
 
 /* CSS - Slide 2 */
@@ -141,8 +145,78 @@ header {
     text-align: center
 }
 
-/* Slide 1 */
-#slide-3 .bcg {
-    background-image:url('../images/melting-ice.jpg')
+
+
+#slide-3-content-plur {
+    height:100%;
+    opacity: 0;
+    background-color: white;
+    width:60%;
+    background: url('../images/melting-ice.jpg') no-repeat center center fixed;
+    background-size: cover;
+        background-color: black;
+    opacity: 0.5;
+        -webkit-background-size: cover;
+            -moz-background-size: cover;
+                -o-background-size: cover;
+    filter: blur(5px);
+        -webkit-filter: blur(5px);
+            -moz-filter: blur(5px);
+                -o-filter: blur(5px);
+                     -ms-filter: blur(5px);
+
+    -webkit-mask-box-image: -webkit-linear-gradient(black 25%, transparent 35%, transparent 65%, black 75%);
+
+.fadeIns;
+
+}
+.slide-3-content-show {
+    .fadeIns;
+
+   opacity: 1 !important;
+}
+
+#slide-3-content-container {
+    float:left;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#slide-3-content {
+    .fadeIns;
+    position: absolute;
+    top:0%;
+    width: 40%;
+    height: 100%;
+    opacity: 0;
+}
+
+#slide-3-content-inner-container {
+    width:100%;
+    height: 100%;
+}
+#slide-3-content-inner{
+    position: absolute;
+    width:90%;
+    height: 70%;
+    top:20%;
+}
+
+/* Slide 4 */
+
+.homeSlideTall {
+    height: 150%;
+}
+
+.curtainContainer {
+    width: 100%; height: 100%;
+    position: relative;
+}
+.curtainContainer .curtain {
+    width: 100%; height: 0px;
+    background-color: #000000;
+    position: absolute; top: 25%; left: 0;
+    opacity: 0
 }
 
