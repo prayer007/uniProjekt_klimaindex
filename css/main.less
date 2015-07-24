@@ -16,6 +16,10 @@
         transition-timing-function: cubic-bezier(0.295, 0.785, 0.285, 0.985); /* custom */
 }
 
+@font-face { 
+font-family: "emporo"; 
+src: url("fonts/emporo.ttf"); 
+}
 
 html, body {
     margin:0;
@@ -30,6 +34,10 @@ p {
     padding:0;
 }
 
+h1 {
+    font-size: 1.5em;
+}
+
 @headerTransitionSpeed: 0.5s;
 @logoColorTransSpeed: 0.5s;
 
@@ -37,22 +45,24 @@ p {
     height:100%;
 }
 
-@headerHeight: 110px;
+@headerHeight: 13%;
+@headerHeightMin: 10%;
+@headerColor: #f8f9fb;
 
 header {
-	background-color:#f8f9fb;
+	background-color:@headerColor;
 	height: @headerHeight;
 	position: fixed;
 	width:100%;
 	display: table;
     font-family: Lora;
 	font-size: 3em;
-    z-index: 1;
+    z-index: 2;
 -webkit-transition: all @headerTransitionSpeed ease;
 -moz-transition: all @headerTransitionSpeed  ease;
 -o-transition: all @headerTransitionSpeed  ease;
 -ms-transition: all @headerTransitionSpeed ease;
-visibility: hidden;
+/*visibility: hidden;*/
 }
 
 #header_content {
@@ -63,7 +73,7 @@ visibility: hidden;
 
 .header_minimalize {
     font-size: 2.3em;
-    height:80px;
+    height:10%;
 -webkit-transition: all @headerTransitionSpeed  ease;
 -moz-transition: all @headerTransitionSpeed  ease;
 -o-transition: all @headerTransitionSpeed  ease;
@@ -72,6 +82,38 @@ visibility: hidden;
 
 .header_color_letters {
     color:#006600;
+}
+
+.slideHeader {
+    font-family: emporo;
+    position: fixed;
+    top:@headerHeightMin;
+    height:9%;
+    width: 100%;
+    background-color: @headerColor;
+    opacity: 0;
+    z-index: 2;
+    -webkit-transition: opacity 800ms cubic-bezier(0.295, 0.785, 0.285, 0.985);
+   -moz-transition: opacity 800ms cubic-bezier(0.295, 0.785, 0.285, 0.985);
+     -o-transition: opacity 800ms cubic-bezier(0.295, 0.785, 0.285, 0.985);
+        transition: opacity 800ms cubic-bezier(0.295, 0.785, 0.285, 0.985); /* custom */
+
+-webkit-transition-timing-function: cubic-bezier(0.295, 0.785, 0.285, 0.985);
+   -moz-transition-timing-function: cubic-bezier(0.295, 0.785, 0.285, 0.985);
+     -o-transition-timing-function: cubic-bezier(0.295, 0.785, 0.285, 0.985);
+        transition-timing-function: cubic-bezier(0.295, 0.785, 0.285, 0.985); /* custom */
+}
+.slideHeaderVis {
+    opacity: 1;
+    -webkit-transition: opacity 800ms cubic-bezier(0.295, 0.785, 0.285, 0.985);
+   -moz-transition: opacity 800ms cubic-bezier(0.295, 0.785, 0.285, 0.985);
+     -o-transition: opacity 800ms cubic-bezier(0.295, 0.785, 0.285, 0.985);
+        transition: opacity 800ms cubic-bezier(0.295, 0.785, 0.285, 0.985); /* custom */
+
+-webkit-transition-timing-function: cubic-bezier(0.295, 0.785, 0.285, 0.985);
+   -moz-transition-timing-function: cubic-bezier(0.295, 0.785, 0.285, 0.985);
+     -o-transition-timing-function: cubic-bezier(0.295, 0.785, 0.285, 0.985);
+        transition-timing-function: cubic-bezier(0.295, 0.785, 0.285, 0.985); /* custom */
 }
 
 #social_logo_container, #impressum_logo_container {
@@ -131,21 +173,26 @@ visibility: hidden;
     height: 100%;
     width: 100%;
 }
+.homeSlide {
+    height:120%;
+}
+
 
 /* Slide 1 */
 #slide-1 .bcg {
 	background-image:url('../images/Our-Planet-planet-earth.jpg');
 }
 
-/* CSS - Slide 2 */
+
+/* Slide 2 */
 #slide-2 .bcg {
     background: none;
     background-color: #010101;
-    height: 200px;
-    text-align: center
+    text-align: center;
 }
 
 
+/* Slide 3 */
 
 #slide-3-content-plur {
     height:100%;
@@ -159,11 +206,11 @@ visibility: hidden;
         -webkit-background-size: cover;
             -moz-background-size: cover;
                 -o-background-size: cover;
-    filter: blur(5px);
+/*    filter: blur(5px);
         -webkit-filter: blur(5px);
             -moz-filter: blur(5px);
                 -o-filter: blur(5px);
-                     -ms-filter: blur(5px);
+                     -ms-filter: blur(5px);*/
 
     -webkit-mask-box-image: -webkit-linear-gradient(black 25%, transparent 35%, transparent 65%, black 75%);
 
@@ -202,21 +249,113 @@ visibility: hidden;
     height: 70%;
     top:20%;
 }
+#headerSlideContainer {
+    display: table;
+}
+#headerSlideContent {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
 
 /* Slide 4 */
 
 .homeSlideTall {
-    height: 150%;
+    height: 200%;
+}
+
+.slideBackground {
+    height: 100%;
+    width:100%;
+    background-color: black;
+    position: absolute;
+    bottom: 0;
 }
 
 .curtainContainer {
     width: 100%; height: 100%;
     position: relative;
 }
+.curtainContainer p {
+    color:black;
+    font-size: 1.5em;
+}
 .curtainContainer .curtain {
-    width: 100%; height: 0px;
+    width: 100%; height: 0%;
     background-color: #000000;
     position: absolute; top: 25%; left: 0;
     opacity: 0
 }
+.trigger{
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+}
+#curtainContentContainer {
+    height: 200%;
+    position: absolute;
+    width: 100%;
+}
+.curtainContent {
+    .fadeIns;
+    color: white;
+    position: absolute;
+    bottom: 11%;
+    width: 40%;
+    height: 29%;
+    z-index: 1;
+    opacity: 0;
+}
+.curtainContentVis {
+    .fadeIns;
+    opacity: 1 !important;
+}
+.curtainContentBackground {
+    .fadeIns;
+    position: absolute;
+    bottom: 0%;
+    width: 45%;
+    height: 49%;
+    z-index: 1;
+    background-color: black;
+    opacity: 0;
+}
+.curtainContentBackgroundVis {
+    .fadeIns;
+    opacity: 0.5;
+}
+.curtainHeaderContainer{
+    background-color: white;
+    height:6%;
+    width: 100%;
+    opacity: 0;
+    bottom:0;
+    position: absolute;
+    display: table;
+/*    visibility: visible;*/
+}
+/*.curtainHeaderContainerNotVis{
+    visibility: hidden;
+}*/
+.curtainHeaderContent{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
 
+/* Slide 5 */
+
+#slide-5 .bcg {
+    background-image:url('../images/1.jpg');
+}
+
+.chapter {
+    padding-left: 1em;
+    font-size: 1.8em;
+    cursor: pointer;
+    color: grey;
+}
+.chapterSelected {
+    font-size: 2em;
+    text-decoration: underline;
+}

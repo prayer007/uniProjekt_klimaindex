@@ -7,6 +7,8 @@ $(window).load(function() {
 
 $(document).ready(function() {
 
+                jQuery.scrollSpeed(100, 800);
+
 
     NProgress.start(); // Start the progress bar if the body is known
 
@@ -17,32 +19,20 @@ $(document).ready(function() {
 	var s = skrollr.init({
         render: function(data) {
             //console.log(data.curTop);
-        },
-                constants: {
-            box: '150p'
         }
     });
 
-$(window).on("scrollstop", {latency: 0}, function() {
+var triggerHeight = $(window).height(); // Trigger to show the content inside the slides
+$(".trigger").css("height",triggerHeight);
 
-        if($("#slide-3").isOnScreen(0.9, 0.9)) {
-        $("#slide-3-content-plur").addClass("slide-3-content-show");
-        $("#slide-3-content").addClass("slide-3-content-show");
 
-        $("#slide-3-content-inner").mCustomScrollbar("update");
+// #############################
+// ##  Minimalize the header  ##
+// #############################
 
-    } else if(!$("#slide-3").isOnScreen(0.7, 0.7)){
-                 $("#slide-3-content-plur").removeClass("slide-3-content-show");
-                 $("#slide-3-content").removeClass("slide-3-content-show");
+    var hideHeight = (windowHeight/2)-$("#header").height(); // This is the height where the header gets minimalized 
 
-                 $("#slide-3-content-inner").mCustomScrollbar("disable");
-    }
-
-  })
-
-	var hideHeight = (windowHeight/2)-$("#header").height(); // This is the height where the header gets minimalized 
-
-	$(window).on("scroll", function () {
+    $(window).on("scroll", function () {
     if ($(this).scrollTop() >= hideHeight) {
         $("#header").addClass("header_minimalize");
     }
@@ -51,6 +41,68 @@ $(window).on("scrollstop", {latency: 0}, function() {
     }
 });
 
+
+// #######################################
+// ##  FadeIn the content of each slide ##
+// #######################################
+
+
+var scrollTrigger = true;
+$(window).on("scrollstop", {latency: 0}, function() {
+
+
+        // SLIDE 4
+        var slide4 = $("#slide-4");
+        var trigger = $("#triggerSlide4");
+        if(slide4.isOnScreen(0.3,0.3)) { 
+            $(".chapter").removeClass("chapterSelected");
+            $("#chapter4").addClass("chapterSelected");
+            addSlideContent(slide4, trigger); // Only excute this function if the slide is on screen,
+        }                                     // else each funtion will be triggered and impair performance
+
+         // SLIDE 5
+        var slide5 = $("#slide-5");
+        var trigger = $("#triggerSlide5");
+        if(slide5.isOnScreen(0.3,0.3)) {        
+            $(".chapter").removeClass("chapterSelected");
+            $("#chapter5").addClass("chapterSelected");
+            addSlideContent(slide5, trigger);
+        }
+
+  });
+
+
+// Adds content and animation to each slide
+function addSlideContent(this_, trigger) {
+
+        var nextSlide = this_.next();
+        var curtainContentContainer = this_.children().children();
+        var curtainContentBackground = curtainContentContainer.children().first();
+        var curtainContent = curtainContentBackground.next();
+
+        // If the trigger is 80% visible on screen fadeIn the content
+        if(trigger.isOnScreen(0.8,0.8) && (!nextSlide.isOnScreen(0,0))) {
+            if(scrollTrigger === true) {
+                $("body").disablescroll();
+            }
+                setTimeout(function(){ $("body").disablescroll("undo"); scrollTrigger = false; }, 1500);
+
+            curtainContentBackground.addClass("curtainContentBackgroundVis"); // Fades the background under the text
+            curtainContent.addClass("curtainContentVis"); // Fades the text content of the curtain
+            $("#headerSlideContainer").addClass("slideHeaderVis"); // Shows the header of the current slide
+        }
+        else {
+            scrollTrigger = true;
+            curtainContentBackground.removeClass("curtainContentBackgroundVis");
+            curtainContent.removeClass("curtainContentVis");
+            $("#headerSlideContainer").removeClass("slideHeaderVis");
+        }
+
+        // If the trigger is visible only half of the screen reduce scroll speed
+        if(trigger.isOnScreen(0.5,0.5)) {
+            //jQuery.scrollSpeed(20, 800);
+        }
+}
 
 
 
@@ -112,6 +164,9 @@ function animateSvgLogo(id, color, infoWinContent) {
 
 
         $("#slide-3-content-inner").mCustomScrollbar({ 
+            axis:"y" // horizontal scrollbar
+        });
+        $(".curtainContent").mCustomScrollbar({ 
             axis:"y" // horizontal scrollbar
         });
 
