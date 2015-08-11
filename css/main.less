@@ -35,7 +35,9 @@ p {
 }
 
 h1 {
-    font-size: 1.5em;
+    font-size: 1.8em;
+    margin: 0;
+    padding:0;
 }
 
 @headerTransitionSpeed: 0.5s;
@@ -50,13 +52,13 @@ h1 {
 @headerColor: #f8f9fb;
 
 header {
-	background-color:@headerColor;
-	height: @headerHeight;
-	position: fixed;
-	width:100%;
-	display: table;
+    background-color:@headerColor;
+    height: @headerHeight;
+    position: fixed;
+    width:100%;
+    display: table;
     font-family: Lora;
-	font-size: 3em;
+    font-size: 3em;
     z-index: 2;
 -webkit-transition: all @headerTransitionSpeed ease;
 -moz-transition: all @headerTransitionSpeed  ease;
@@ -65,10 +67,41 @@ header {
 /*visibility: hidden;*/
 }
 
+.map_container {
+    .fadeIns;
+    position: absolute;
+    background-color: white;
+    width: 23%;
+    height: 16%;
+    z-index: 1;
+    bottom: 11%;
+    left: 45%;
+    opacity: 0;
+}
+.map_containerVis {
+    .fadeIns;
+    opacity: 1 !important; 
+}
+#map {
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+.resizeMapButton {
+    position: absolute;
+    cursor: pointer;
+    width:10%;
+    height: 10%;
+    top:0;
+    right: 0;
+    background-color: yellow;
+    z-index: 3;
+}
+
 #header_content {
-	display: table-cell;
-	vertical-align: middle;
-	text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
 }
 
 .header_minimalize {
@@ -178,87 +211,8 @@ header {
 }
 
 
-/* Slide 1 */
-#slide-1 .bcg {
-	background-image:url('../images/Our-Planet-planet-earth.jpg');
-}
 
-
-/* Slide 2 */
-#slide-2 .bcg {
-    background: none;
-    background-color: #010101;
-    text-align: center;
-}
-
-
-/* Slide 3 */
-
-#slide-3-content-plur {
-    height:100%;
-    opacity: 0;
-    background-color: white;
-    width:60%;
-    background: url('../images/melting-ice.jpg') no-repeat center center fixed;
-    background-size: cover;
-        background-color: black;
-    opacity: 0.5;
-        -webkit-background-size: cover;
-            -moz-background-size: cover;
-                -o-background-size: cover;
-/*    filter: blur(5px);
-        -webkit-filter: blur(5px);
-            -moz-filter: blur(5px);
-                -o-filter: blur(5px);
-                     -ms-filter: blur(5px);*/
-
-    -webkit-mask-box-image: -webkit-linear-gradient(black 25%, transparent 35%, transparent 65%, black 75%);
-
-.fadeIns;
-
-}
-.slide-3-content-show {
-    .fadeIns;
-
-   opacity: 1 !important;
-}
-
-#slide-3-content-container {
-    float:left;
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-#slide-3-content {
-    .fadeIns;
-    position: absolute;
-    top:0%;
-    width: 40%;
-    height: 100%;
-    opacity: 0;
-}
-
-#slide-3-content-inner-container {
-    width:100%;
-    height: 100%;
-}
-#slide-3-content-inner{
-    position: absolute;
-    width:90%;
-    height: 70%;
-    top:20%;
-}
-#headerSlideContainer {
-    display: table;
-}
-#headerSlideContent {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-}
-
-/* Slide 4 */
+/* SLIDES */
 
 .homeSlideTall {
     height: 200%;
@@ -324,6 +278,39 @@ header {
     .fadeIns;
     opacity: 0.5;
 }
+
+/* Slide 1 */
+#slide-1 .bcg {
+    background-image:url('../images/1.jpg');
+}
+/* Slide 2 */
+#slide-2 .bcg {
+    background-image:url('../images/2.jpg');
+}
+/* Slide 3 */
+#slide-3 .bcg {
+    background-image:url('../images/3.jpg');
+}
+/* Slide 4 */
+#slide-4 .bcg {
+    background-image:url('../images/4.jpg');
+}
+/* Slide 5 */
+#slide-5 .bcg {
+    background-color:grey;
+}
+
+/* HEADERS */
+
+#headerSlideContainer {
+    display: table;
+}
+#headerSlideContent {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
 .curtainHeaderContainer{
     background-color: white;
     height:6%;
@@ -332,22 +319,15 @@ header {
     bottom:0;
     position: absolute;
     display: table;
-/*    visibility: visible;*/
+    font-family: emporo;
 }
-/*.curtainHeaderContainerNotVis{
-    visibility: hidden;
-}*/
+
 .curtainHeaderContent{
     display: table-cell;
     vertical-align: middle;
     text-align: center;
 }
 
-/* Slide 5 */
-
-#slide-5 .bcg {
-    background-image:url('../images/1.jpg');
-}
 
 .chapter {
     padding-left: 1em;
@@ -356,6 +336,6 @@ header {
     color: grey;
 }
 .chapterSelected {
-    font-size: 2em;
+    font-size: 2.2em;
     text-decoration: underline;
 }

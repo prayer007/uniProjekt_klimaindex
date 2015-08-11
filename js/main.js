@@ -7,12 +7,11 @@ $(window).load(function() {
 
 $(document).ready(function() {
 
-                jQuery.scrollSpeed(100, 800);
+    //jQuery.scrollSpeed(100, 800);
 
 
     NProgress.start(); // Start the progress bar if the body is known
 
-  console.log(screen.height) 
 
     var windowHeight = $(window).height(); // Height of the current viewport
 	// Initialize Skrollr for parallax scrolling
@@ -51,6 +50,24 @@ var scrollTrigger = true;
 $(window).on("scrollstop", {latency: 0}, function() {
 
 
+        // SLIDE 2
+        var slide2 = $("#slide-2");
+        var trigger = $("#triggerSlide2");
+        if(slide2.isOnScreen(0.3,0.3)) { 
+            $(".chapter").removeClass("chapterSelected");
+            $("#chapter2").addClass("chapterSelected");
+            addSlideContent(slide2, trigger); 
+        } 
+
+        // SLIDE 3
+        var slide3 = $("#slide-3");
+        var trigger = $("#triggerSlide3");
+        if(slide3.isOnScreen(0.3,0.3)) { 
+            $(".chapter").removeClass("chapterSelected");
+            $("#chapter3").addClass("chapterSelected");
+            addSlideContent(slide3, trigger); 
+        } 
+
         // SLIDE 4
         var slide4 = $("#slide-4");
         var trigger = $("#triggerSlide4");
@@ -79,6 +96,8 @@ function addSlideContent(this_, trigger) {
         var curtainContentContainer = this_.children().children();
         var curtainContentBackground = curtainContentContainer.children().first();
         var curtainContent = curtainContentBackground.next();
+        var mapContainer = curtainContent.next();
+        console.log(mapContainer)
 
         // If the trigger is 80% visible on screen fadeIn the content
         if(trigger.isOnScreen(0.8,0.8) && (!nextSlide.isOnScreen(0,0))) {
@@ -89,12 +108,19 @@ function addSlideContent(this_, trigger) {
 
             curtainContentBackground.addClass("curtainContentBackgroundVis"); // Fades the background under the text
             curtainContent.addClass("curtainContentVis"); // Fades the text content of the curtain
+            mapContainer.addClass('map_containerVis')
             $("#headerSlideContainer").addClass("slideHeaderVis"); // Shows the header of the current slide
+
+            $(".curtainContent").mCustomScrollbar("update");
         }
         else {
+
+            $(".curtainContent").mCustomScrollbar("disable");
+
             scrollTrigger = true;
             curtainContentBackground.removeClass("curtainContentBackgroundVis");
             curtainContent.removeClass("curtainContentVis");
+            mapContainer.removeClass('map_containerVis');
             $("#headerSlideContainer").removeClass("slideHeaderVis");
         }
 
@@ -163,12 +189,74 @@ function animateSvgLogo(id, color, infoWinContent) {
 }
 
 
-        $("#slide-3-content-inner").mCustomScrollbar({ 
-            axis:"y" // horizontal scrollbar
-        });
+// #######################
+// ##  Navigation bar   ##
+// #######################
+
+
+
+
+$(".chapter").click(function() {
+
+    var id = $(this).attr('id');
+    var sectionChapter = id.slice(-1);
+    var scrollTo = "#" + "slide-" + sectionChapter;  
+    
+    var height = $(scrollTo).height()/2; 
+    var padding = $(scrollTo).height()/16; // Using relative values ensures that the text appears in the middle of the screen
+    var position = $(scrollTo).position().top;  
+    var bottom = position + height-padding;
+
+    $('html, body').animate({
+        scrollTop: bottom
+    }, 1000);
+
+});
+
+
+
         $(".curtainContent").mCustomScrollbar({ 
             axis:"y" // horizontal scrollbar
         });
 
-        $("#slide-3-content-inner").mCustomScrollbar("disable"); // Start disabled to prevent scrolling issues
+        $(".curtainContent").mCustomScrollbar("disable"); // Start disabled to prevent scrolling issues
+
+
+
+// #######################
+// ##  Interactive map  ##
+// #######################
+
+var map = L.map('map', {
+        maxZoom: 6
+}).setView([30, 15], 1);
+
+
+L.tileLayer('http://localhost/uniProjekt_klimaindex/tiles/{z}/{x}/{y}.png', {
+    attribution: '&copy; Manuel Strohmaier'
+}).addTo(map);
+
+function findOffsetTop() {
+
+    var thisMap = $('.map_container');
+
+    var heightOfTopElements = $("#header").height() + $("#headerSlideContent").height();
+
+    var scrollTop = $(window).scrollTop(),
+        thisElementsTopOffset = thisMap.offset().top;
+        distanceToTopOfWindow = (thisElementsTopOffset - scrollTop);
+
+    var distance = distanceToTopOfWindow - heightOfTopElements;
+
+    return distance;  
+
+}
+
+$('.resizeMapButton').click(function() {
+
+    height = findOffsetTop() + $(this).parent().height(); 
+    $(this).parent().height(height);
+    map.invalidateSize(false);
+})
+
 });

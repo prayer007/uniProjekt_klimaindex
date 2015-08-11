@@ -5,9 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 <link rel="stylesheet/less" type="text/css" href="css/main.less" />
-<link rel="stylesheet" type="text/css" href="css/skrollr.css" />
 <link rel="stylesheet" type="text/css" href="css/tooltipster.css" />
 <link rel="stylesheet" type="text/css" href="css/nprogress.css" />
+<link rel="stylesheet" href="css/leaflet.css" />
 <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css" />
 <link href='http://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300' rel='stylesheet' type='text/css'>
@@ -22,6 +22,8 @@
 <script src="js/scrollstop.js"></script>
 <script src="js/scrollSpeed.js"></script>
 <script src="js/disableScroll.js"></script>
+<script src="js/leaflet.js"></script>
+<script src="js/leaflet.utfgrid.js"></script>
 <script src="js/jquery.mCustomScrollbar.min.js"></script>
 <script src="js/main.js"></script>
 
@@ -72,30 +74,85 @@
 		    </div>
 		</section>
 
-<section id="slide-3" class="homeSlide">
-	<div class="bcg"
-	    data-center="background-position: 0px 50%;"
-        data-bottom-top="background-position: 0px 0%;"
-        data-top-bottom="background-position: 0px 5%;"
-        data-anchor-target="#slide-3">
+<!-- SLIDE 2 -->
 
-<div id="slide-3-content-container">
-		<div id="slide-3-content-plur"
-		data-center="background-position: 0px 50%;"
-        data-bottom-top="background-position: 0px 0%;"
-        data-top-bottom="background-position: 0px 5%;"
-        data-anchor-target="#slide-3">
-		</div>
-			 <div id="slide-3-content">
-			 	<div id="slide-3-content-inner-container">
-				 	<div id="slide-3-content-inner">
-			        	<p>Blablablabalbla</p>
+<section id="slide-2" class="homeSlideTall">
+    <div class="bcg"
+        data-bottom-top="background-position: 0px 5em"
+        data-center="background-position: 0px 0%;"
+        data-anchor-target="#slide-2"
+    >
+
+       <div id="curtainContentContainer">
+       	<div class="curtainContentBackground"></div>
+       	<div class="curtainContent">
+       		        	<p>Blablablabalbla</p>
 			        	<span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</span>
-			        </div>
-		    	</div>
+
+       	</div>
+
+       		<!-- map -->
+       	    <div class="map_container">
+				<div id="map">
+				</div>
+				<div class="resizeMapButton"></div>
+			</div>
+
+	        <div class="slideBackground"
+	        	 data-bottom-top="opacity:0"
+	        	 data-bottom="opacity:0.7"
+	        	 data-anchor-target="#slide-2">
 	        </div>
+		    <div class="curtainHeaderContainer"
+	    	     data-top="top:45%;"
+	    	     data-bottom-top="opacity:0.4"
+	        	 data-bottom="opacity:1"
+	    	     data-anchor-target="#slide-2">
+		    		<div class="curtainHeaderContent">
+		    			<h1>II</h1>
+		    		</div> 
+		    </div> 
+		    <div id="triggerSlide2" class="trigger"></div> 
+
+
+
+    	</div>		
 	</div>
-    </div>
+</section>
+
+<!-- SLIDE 3 -->
+
+<section id="slide-3" class="homeSlideTall">
+    <div class="bcg"
+        data-bottom-top="background-position: 0px 5em"
+        data-center="background-position: 0px 0%;"
+        data-anchor-target="#slide-3"
+    >
+
+       <div id="curtainContentContainer">
+       	<div class="curtainContentBackground"></div>
+       	<div class="curtainContent">
+       		        	<p>Blablablabalbla</p>
+			        	<span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</span>
+
+       	</div>
+	        <div class="slideBackground"
+	        	 data-bottom-top="opacity:0"
+	        	 data-bottom="opacity:0.7"
+	        	 data-anchor-target="#slide-3">
+	        </div>
+		    <div class="curtainHeaderContainer"
+	    	     data-top="top:45%;"
+	    	     data-bottom-top="opacity:0.4"
+	        	 data-bottom="opacity:1"
+	    	     data-anchor-target="#slide-3">
+		    		<div class="curtainHeaderContent">
+		    			<h1>III</h1>
+		    		</div> 
+		    </div> 
+		    <div id="triggerSlide3" class="trigger"></div> 
+    	</div>		
+	</div>
 </section>
 
 
@@ -126,7 +183,7 @@
 	        	 data-bottom="opacity:1"
 	    	     data-anchor-target="#slide-4">
 		    		<div class="curtainHeaderContent">
-		    			<h1>Indikator 1</h1>
+		    			<h1>IV</h1>
 		    		</div> 
 		    </div> 
 		    <div id="triggerSlide4" class="trigger"></div> 
@@ -162,7 +219,7 @@
 	        	 data-bottom="opacity:1"
 	    	     data-anchor-target="#slide-5">
 		    		<div class="curtainHeaderContent">
-		    			<h1>Indikator 2</h1>
+		    			<h1>V</h1>
 		    		</div> 
 		    </div> 
 		    <div id="triggerSlide5"class="trigger"></div> 
