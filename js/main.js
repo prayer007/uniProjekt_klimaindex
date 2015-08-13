@@ -26,6 +26,15 @@ $(".trigger").css("height",triggerHeight);
 
 
 // #############################
+// ##  Tabs for the textbox   ##
+// #############################
+
+$('#tab-container').easytabs();
+$('#etabsTextIcon').click(function() {
+    $('#tab-container').easytabs('select', '#curtainContentStatisticsTab');
+})
+
+// #############################
 // ##  Minimalize the header  ##
 // #############################
 
@@ -39,6 +48,9 @@ $(".trigger").css("height",triggerHeight);
         $("#header").removeClass("header_minimalize");
     }
 });
+
+
+
 
 
 // #######################################
@@ -89,7 +101,9 @@ $(window).on("scrollstop", {latency: 0}, function() {
   });
 
 
+
 // Adds content and animation to each slide
+var bottomOffsetFlag = true;
 function addSlideContent(this_, trigger) {
 
         var nextSlide = this_.next();
@@ -97,7 +111,6 @@ function addSlideContent(this_, trigger) {
         var curtainContentBackground = curtainContentContainer.children().first();
         var curtainContent = curtainContentBackground.next();
         var mapContainer = curtainContent.next();
-        console.log(mapContainer)
 
         // If the trigger is 80% visible on screen fadeIn the content
         if(trigger.isOnScreen(0.8,0.8) && (!nextSlide.isOnScreen(0,0))) {
@@ -108,19 +121,37 @@ function addSlideContent(this_, trigger) {
 
             curtainContentBackground.addClass("curtainContentBackgroundVis"); // Fades the background under the text
             curtainContent.addClass("curtainContentVis"); // Fades the text content of the curtain
-            mapContainer.addClass('map_containerVis')
+
             $("#headerSlideContainer").addClass("slideHeaderVis"); // Shows the header of the current slide
 
-            $(".curtainContent").mCustomScrollbar("update");
+            $(".curtainContentTabInner").mCustomScrollbar("update");
+
+
+            if(bottomOffsetFlag === true) {
+
+                var this_ = $('.map_container');
+                
+                var bottom = findOffsetTop()
+
+                setTimeout(function(){
+                    $('.map_container').css({bottom:bottom})
+                bottomOffsetFlag = false; }, 250);
+            } 
+            fadeMapIn();                         
+
         }
         else {
+            $('.map_container').css({bottom:0}) // Get the map container to its original position
 
-            $(".curtainContent").mCustomScrollbar("disable");
+            bottomOffsetFlag = true;
+            $(".curtainContentTabInner").mCustomScrollbar("disable");
 
             scrollTrigger = true;
             curtainContentBackground.removeClass("curtainContentBackgroundVis");
             curtainContent.removeClass("curtainContentVis");
-            mapContainer.removeClass('map_containerVis');
+
+            fadeMapOut();
+
             $("#headerSlideContainer").removeClass("slideHeaderVis");
         }
 
@@ -131,6 +162,9 @@ function addSlideContent(this_, trigger) {
 }
 
 
+function adjustTextContent() {
+    //$('.curtainContent').
+}
 
 // #######################################
 // ##  Animate the social media logos   ##
@@ -189,10 +223,10 @@ function animateSvgLogo(id, color, infoWinContent) {
 }
 
 
+
 // #######################
 // ##  Navigation bar   ##
 // #######################
-
 
 
 
@@ -215,11 +249,14 @@ $(".chapter").click(function() {
 
 
 
-        $(".curtainContent").mCustomScrollbar({ 
-            axis:"y" // horizontal scrollbar
+        $(".curtainContentTabInner").mCustomScrollbar({ 
+            axis:"y", // horizontal scrollbar
+            scrollbarPosition: "outside"
         });
 
-        $(".curtainContent").mCustomScrollbar("disable"); // Start disabled to prevent scrolling issues
+        $(".curtainContentTabInner").mCustomScrollbar("disable"); // Start disabled to prevent scrolling issues
+
+
 
 
 
@@ -227,7 +264,7 @@ $(".chapter").click(function() {
 // ##  Interactive map  ##
 // #######################
 
-var map = L.map('map', {
+map = L.map('map', {
         maxZoom: 6
 }).setView([30, 15], 1);
 
@@ -236,6 +273,108 @@ L.tileLayer('http://localhost/uniProjekt_klimaindex/tiles/{z}/{x}/{y}.png', {
     attribution: '&copy; Manuel Strohmaier'
 }).addTo(map);
 
+
+
+var utfGrid = new L.UtfGrid('http://localhost/uniProjekt_klimaindex/tiles/{z}/{x}/{y}.grid.json', {
+    useJsonP: false
+});
+
+utfGrid.on('click', function (e) {
+
+    //$('.curtainContentBackground').addClass('curtainContentBackgroundFadeOut');
+    $('#tab-container').easytabs('select', '#curtainContentStatisticsTab');
+
+
+    //click events are fired with e.data==null if an area with no hit is clicked
+    if (e.data) {
+            $("#curtainContentStatisticsTabInner").text('click: ' + e.data["2011"] + " // " + e.data.NAME);
+    } else {
+        alert('click: nothing');
+    }
+});
+
+map.addLayer(utfGrid);
+
+function fadeMapIn() {
+    $('.map_container').addClass('map_containerVis')
+
+    setTimeout(function(){ 
+        map.invalidateSize(false);
+    }, 510); // After animation from css have done
+
+}
+
+function fadeMapOut() {
+    $('.map_container').removeClass('map_containerVis') 
+}
+
+var flag = 0;
+function expandMap() {
+
+
+        var newHeight = findHeightTop(),
+            newWidth = findWidthLeft() + $('.map_container').width();
+
+        if(flag==0) {
+
+            $('.map_container').height(newHeight)
+            $('.map_container').width(newWidth);
+            $('.resizeMapButton').addClass('resizeMapButtonZoomout');
+            map.setZoom(2);
+
+        flag=1;
+
+        setTimeout(function(){ 
+            map.invalidateSize(false);  
+        }, 510); // Resize if css ease has done
+
+        return;
+        }
+
+        if(flag==1) {
+
+            $('.map_container').css({height:""})
+            $('.map_container').css({width:""})
+            $('.resizeMapButton').removeClass('resizeMapButtonZoomout');
+            map.setZoom(1);
+
+        flag=0;
+
+        setTimeout(function(){ 
+            map.invalidateSize(false);  
+        }, 510); // Resize if css ease has done
+
+        return;
+        }
+}
+
+function findHeightTop() {
+
+    var thisMap = $('.map_container');
+
+    var windowHeight = $(window).height(),
+        heightOfTopElements = $("#header").height() + $("#headerSlideContent").height();
+
+    var distance = windowHeight - heightOfTopElements;
+
+    return distance;  
+
+}
+
+function findWidthLeft() {
+
+    var thisMap = $('.map_container');
+
+    var widthOfLeftElements = $(".curtainContentBackground").width(),
+        thisElementsWidth = thisMap.width(),
+        windowWidth = $(window).width();
+
+    var distance = windowWidth - (thisElementsWidth + widthOfLeftElements);
+
+    return distance;  
+
+}
+
 function findOffsetTop() {
 
     var thisMap = $('.map_container');
@@ -243,20 +382,19 @@ function findOffsetTop() {
     var heightOfTopElements = $("#header").height() + $("#headerSlideContent").height();
 
     var scrollTop = $(window).scrollTop(),
-        thisElementsTopOffset = thisMap.offset().top;
-        distanceToTopOfWindow = (thisElementsTopOffset - scrollTop);
+        windowHeight = $(window).height(),
+        thisElementsTopOffset = thisMap.offset().top,
+        distanceToTopOfWindow = (thisElementsTopOffset - scrollTop),
+        heightOfTruncated = windowHeight - distanceToTopOfWindow;
 
-    var distance = distanceToTopOfWindow - heightOfTopElements;
+    var distance = thisMap.height() - heightOfTruncated;
 
     return distance;  
 
 }
 
 $('.resizeMapButton').click(function() {
-
-    height = findOffsetTop() + $(this).parent().height(); 
-    $(this).parent().height(height);
-    map.invalidateSize(false);
+    expandMap();
 })
 
 });
