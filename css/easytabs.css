@@ -1,15 +1,24 @@
 .etabs { 
 	margin: 0 0 0 10%; 
 	padding: 0; 
+	position: relative;
 }
+
+/*###################
+##  Standard Tabs  ##
+#####################*/
+
 .tab { 
+	position: absolute;
 	display: inline-block; 
 	zoom:1; *display:inline; 
 	background: #eee; border: solid 1px #999; border-bottom: none; 
 -moz-border-radius: 4px 4px 0 0; 
 -webkit-border-radius: 4px 4px 0 0; 
+	visibility: hidden;
+	left:-1000000000px;
 }
-.tab a { 
+/*.tab a { 
 	font-size: 14px; 
 	line-height: 2em; 
 	display: block; 
@@ -21,29 +30,68 @@
 }
 .tab.active { 
 	background: #fff; 
-	padding-top: 6px; position: relative; 
+	padding-top: 6px; position: absolute; 
 	top: 1px; 
 	border-color: #666; 
+left:-1000000000px;
 }
 .tab a.active { 
 	font-weight: bold; 
-}
+}*/
+
+
+/*################
+##  Custom Tab  ##
+##################*/
+​
 .tab-container .panel-container { 
 	background: #fff; border: solid #666 1px; 
 	padding: 10px; -moz-border-radius: 0 4px 4px 4px; 
 	-webkit-border-radius: 0 4px 4px 4px; 
 }
+#tab1 {
+	float: left;
+}
+#tab1 svg{
+	height: 100%;
+}
+#tab2 {
+	overflow: hidden;
+}
+#tab2 svg {
+	height: 100%;
+}
 
-#etabsTextIcon {
-	display: inline-block;
+.tabs {
 	height: 10%;
-	width: 10%;
-	background-color: yellow;
+	width: 14%;
+	cursor: pointer;
+	margin:0 8% 0 0;
 }
-#etabsStatisticsIcon {
-	display: inline-block;
-	height: 10%;
-	width: 10%;
-	background-color: yellow;
-	bottom:0;
+/*.tabsIcon {
+	height: 100%;
+	width: 30%;
+	float: left;
+	display: table;
 }
+.tabsHeader {
+	height: 100%;
+	width: 70%;
+	overflow: hidden;
+	display: table;
+}
+.tabsHeaderInner {
+	display: table-cell;
+	vertical-align: middle;
+}
+.tabsIconInner {
+	display: table-cell;
+	vertical-align: middle;
+	background-image: url(../images/text2.png);
+	line-height: 0.5em;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;*/
+}
+

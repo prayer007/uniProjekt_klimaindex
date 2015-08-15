@@ -29,9 +29,161 @@ $(".trigger").css("height",triggerHeight);
 // ##  Tabs for the textbox   ##
 // #############################
 
+
+//// FIRST TAB
+
+function doSetTimeout(i){
+
+    // var thisSvg  = $("#tab1_SVG");
+    // var elements = thisSvg.children();
+
+    // setTimeout(function() { 
+    // $(elements[i]).velocity( {
+    //     width:"-=10"
+    // })
+    // })
+}
+
+function textTabMouseOver() {
+    var thisSvg  = $("#tab1_SVG");
+    var elements = thisSvg.children();
+    var animSpeed = 30;
+
+    $(thisSvg).velocity({fill:'#ffffff'})
+
+    for (var i = 0; i<elements.length; i++) {
+
+        (function(i) {
+        setTimeout(function() {
+            $(elements[i]).velocity( {
+            width:"-=10"
+        })
+        }, animSpeed * i);
+        })(i);
+
+     }
+setTimeout(function() {
+     for (var i = 0; i<elements.length; i++) {
+
+        (function(i) {
+        setTimeout(function() {
+            $(elements[i]).velocity( {
+            width:"+=10"
+        })
+        }, animSpeed * i);
+        })(i);
+
+     }
+     }, animSpeed * elements.length);
+}
+function textTabMouseOut() {
+
+    var thisSvg = $("#tab1_SVG");
+
+    var elements = thisSvg.children();
+    var origFill = thisSvg.attr('fill');
+
+if(!isTextTabSelected | (isStatsticTabSelected && !isTextTabSelected))
+    thisSvg.velocity({fill:origFill})
+
+
+}
+
+//// SECOND TAB
+
+var isStatsticTabSelected = false;
+function statisticsTabMouseOver() {
+
+if(!isStatsticTabSelected) {
+    // First bar
+    var firstElement = $("#tab2_SVG").children().first();
+    $(firstElement).velocity({
+        fill:"#ffffff",
+        height:48,
+        y:"-=10"
+    })
+
+    // Second bar
+    var secondElement = firstElement.next();
+    $(secondElement).velocity({
+        fill:"#ffffff",
+        height:32.4,
+        y:"+=30px"
+    })
+    // Third bar
+    var thirdElement = secondElement.next();
+    $(thirdElement).velocity({
+        fill:"#ffffff",
+        height:58.4,
+        y:"-=35px"
+    })
+    // Fourth bar
+    var fourthElement = thirdElement.next();
+    $(fourthElement).velocity({
+        fill:"#ffffff",
+        height:20.8,
+        y:"+=30px"
+    })
+}
+}
+var isTextTabSelected = false;
+function statisticsTabMouseOut() {
+
+if(!isStatsticTabSelected | (isTextTabSelected && !isStatsticTabSelected)) {
+
+ var origFill = $("#tab2_SVG").attr('fill'); 
+
+    // First bar
+    var firstElement = $("#tab2_SVG").children().first();
+    $(firstElement).velocity({
+        fill:origFill,
+        height:38,
+        y:"+=10"
+    })
+
+    // Second bar
+    var secondElement = firstElement.next();
+    $(secondElement).velocity({
+        fill:origFill,
+        height:62.4,
+        y:"-=30px"
+    })
+    // Third bar
+    var thirdElement = secondElement.next();
+    $(thirdElement).velocity({
+        fill:origFill,
+        height:23.4,
+        y:"+=35px"
+    })
+    // Fourth bar
+    var fourthElement = thirdElement.next();
+    $(fourthElement).velocity({
+        fill:origFill,
+        height:50.8,
+        y:"-=30px"
+    })
+}
+}
+
 $('#tab-container').easytabs();
-$('#etabsTextIcon').click(function() {
-    $('#tab-container').easytabs('select', '#curtainContentStatisticsTab');
+$('#tab1').hover(textTabMouseOver, textTabMouseOut)
+$('#tab2').hover(statisticsTabMouseOver,statisticsTabMouseOut);
+
+$('#tab2').click(function() {
+
+        $('#tab-container').easytabs('select', '#curtainContentStatisticsTab');
+        isStatsticTabSelected = true;  
+        isTextTabSelected = false;
+        textTabMouseOut();
+})
+
+$('#tab1').click(function() {
+    if(isStatsticTabSelected) {
+        $('#tab-container').easytabs('select', '#curtainContentTextTab');
+        isTextTabSelected = true;
+        isStatsticTabSelected = false;       
+        statisticsTabMouseOut();
+    }
 })
 
 // #############################
@@ -281,8 +433,11 @@ var utfGrid = new L.UtfGrid('http://localhost/uniProjekt_klimaindex/tiles/{z}/{x
 
 utfGrid.on('click', function (e) {
 
-    //$('.curtainContentBackground').addClass('curtainContentBackgroundFadeOut');
     $('#tab-container').easytabs('select', '#curtainContentStatisticsTab');
+    statisticsTabMouseOver();
+    isStatsticTabSelected = true; 
+    isTextTabSelected = false;
+    textTabMouseOut();
 
 
     //click events are fired with e.data==null if an area with no hit is clicked
