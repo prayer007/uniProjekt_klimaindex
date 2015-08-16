@@ -1,5 +1,4 @@
 .etabs { 
-	margin: 0 0 0 10%; 
 	padding: 0; 
 	position: relative;
 }
@@ -48,6 +47,9 @@ left:-1000000000px;
 	background: #fff; border: solid #666 1px; 
 	padding: 10px; -moz-border-radius: 0 4px 4px 4px; 
 	-webkit-border-radius: 0 4px 4px 4px; 
+}
+.tabs-container {
+	margin: 0 0 0 10%; 
 }
 #tab1 {
 	float: left;

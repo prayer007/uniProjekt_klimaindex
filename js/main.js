@@ -314,9 +314,8 @@ function addSlideContent(this_, trigger) {
 }
 
 
-function adjustTextContent() {
-    //$('.curtainContent').
-}
+
+
 
 // #######################################
 // ##  Animate the social media logos   ##
@@ -421,15 +420,69 @@ map = L.map('map', {
 }).setView([30, 15], 1);
 
 
-L.tileLayer('http://localhost/uniProjekt_klimaindex/tiles/{z}/{x}/{y}.png', {
+L.tileLayer('tiles/{z}/{x}/{y}.png', {
     attribution: '&copy; Manuel Strohmaier'
 }).addTo(map);
 
 
 
-var utfGrid = new L.UtfGrid('http://localhost/uniProjekt_klimaindex/tiles/{z}/{x}/{y}.grid.json', {
+var utfGrid = new L.UtfGrid('tiles/{z}/{x}/{y}.grid.json', {
     useJsonP: false
 });
+
+
+//// Tooltip
+
+var tooltip = document.getElementById('mapTooltip');
+
+$("#map").mousemove(function(e) {
+    var x = e.clientX,
+        y = e.clientY;
+    tooltip.style.top = (y - 110) + 'px';
+    tooltip.style.left = (x - 196) + 'px';
+
+});
+
+utfGrid.on('mouseover', function(e) {
+
+    var value = e.data[2011];
+
+    var color =  "#0000ff";
+
+    if(value > 0 && value < 0.629)
+        color =  '#1a9850';
+    else if (value >= 0.629 && value < 1.792)
+        color =  '#66bd63';
+    else if (value >= 1.792 && value < 3.325)
+        color = '#a6d96a';
+    else if (value >= 3.325 && value < 5.557)
+        color = '#d9ef8b';
+    else if (value >= 5.557 && value < 8.8336)
+        color = '#fee08b';
+    else if (value >= 8.8336 && value < 14.136)
+        color = '#fdae61';
+    else if (value >= 14.136 && value < 23.968)
+        color = '#f46d43';
+    else if (value >= 23.968)
+        color = '#d73027';
+    else
+        color ='#000000'
+
+
+    $('#mapTooltipContent').html('<h1>' + e.data.NAME + '</h1>'
+                             +  '<span>' + 'CO2 Emissions: ' + '<em style="color:' + color +' ;">' + value + '</em>' + '</span>'  
+    )
+    $('#mapTooltip').addClass('tooltip_hover')
+    $('#tooltipArrow').addClass('tooltip_hover')
+});
+utfGrid.on('mouseout', function(e) {
+    $('#mapTooltip').removeClass('tooltip_hover ')
+});
+
+$('#map').on('mouseout', function(e) {
+    $('#mapTooltip').removeClass('tooltip_hover ')
+});
+// Click
 
 utfGrid.on('click', function (e) {
 
@@ -551,5 +604,6 @@ function findOffsetTop() {
 $('.resizeMapButton').click(function() {
     expandMap();
 })
+
 
 });
