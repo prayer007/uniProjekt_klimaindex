@@ -25,24 +25,14 @@ var triggerHeight = $(window).height(); // Trigger to show the content inside th
 $(".trigger").css("height",triggerHeight);
 
 
-// #############################
-// ##  Tabs for the textbox   ##
-// #############################
+
+// ###################################
+// ##  STYLE Tabs for the textbox   ##
+// ###################################
 
 
 //// FIRST TAB
 
-function doSetTimeout(i){
-
-    // var thisSvg  = $("#tab1_SVG");
-    // var elements = thisSvg.children();
-
-    // setTimeout(function() { 
-    // $(elements[i]).velocity( {
-    //     width:"-=10"
-    // })
-    // })
-}
 
 function textTabMouseOver() {
     var thisSvg  = $("#tab1_SVG");
@@ -83,10 +73,7 @@ function textTabMouseOut() {
     var elements = thisSvg.children();
     var origFill = thisSvg.attr('fill');
 
-if(!isTextTabSelected | (isStatsticTabSelected && !isTextTabSelected))
     thisSvg.velocity({fill:origFill})
-
-
 }
 
 //// SECOND TAB
@@ -94,7 +81,8 @@ if(!isTextTabSelected | (isStatsticTabSelected && !isTextTabSelected))
 var isStatsticTabSelected = false;
 function statisticsTabMouseOver() {
 
-if(!isStatsticTabSelected) {
+
+
     // First bar
     var firstElement = $("#tab2_SVG").children().first();
     $(firstElement).velocity({
@@ -115,8 +103,11 @@ if(!isStatsticTabSelected) {
     $(thirdElement).velocity({
         fill:"#ffffff",
         height:58.4,
-        y:"-=35px"
-    })
+        y:"-=35px" 
+    });
+
+
+
     // Fourth bar
     var fourthElement = thirdElement.next();
     $(fourthElement).velocity({
@@ -125,11 +116,10 @@ if(!isStatsticTabSelected) {
         y:"+=30px"
     })
 }
-}
+
 var isTextTabSelected = false;
 function statisticsTabMouseOut() {
 
-if(!isStatsticTabSelected | (isTextTabSelected && !isStatsticTabSelected)) {
 
  var origFill = $("#tab2_SVG").attr('fill'); 
 
@@ -162,29 +152,39 @@ if(!isStatsticTabSelected | (isTextTabSelected && !isStatsticTabSelected)) {
         height:50.8,
         y:"-=30px"
     })
-}
+
 }
 
+// ####################################
+// ##  Create Tabs for the textbox   ##
+// ####################################
 $('#tab-container').easytabs();
-$('#tab1').hover(textTabMouseOver, textTabMouseOut)
-$('#tab2').hover(statisticsTabMouseOver,statisticsTabMouseOut);
 
-$('#tab2').click(function() {
+textTabMouseOver(); // Start with tab1 selected
+isStatsticTabSelected = false;
+isTextTabSelected = true;
 
-        $('#tab-container').easytabs('select', '#curtainContentStatisticsTab');
-        isStatsticTabSelected = true;  
-        isTextTabSelected = false;
-        textTabMouseOut();
-})
-
-$('#tab1').click(function() {
+$('#tab1').click(function(){
+    $('#tab-container').easytabs('select', '#curtainContentTextTab');
+    isTextTabSelected = true;
     if(isStatsticTabSelected) {
-        $('#tab-container').easytabs('select', '#curtainContentTextTab');
-        isTextTabSelected = true;
-        isStatsticTabSelected = false;       
         statisticsTabMouseOut();
+        textTabMouseOver();
     }
-})
+    isStatsticTabSelected = false;
+
+});
+$('#tab2').click(function(){
+    $('#tab-container').easytabs('select', '#curtainContentStatisticsTab');
+    isStatsticTabSelected = true;
+    if(isTextTabSelected)
+        statisticsTabMouseOver();
+    textTabMouseOut();
+    isTextTabSelected = false;
+});
+
+
+
 
 // #############################
 // ##  Minimalize the header  ##
@@ -221,7 +221,9 @@ $(window).on("scrollstop", {latency: 0}, function() {
             $(".chapter").removeClass("chapterSelected");
             $("#chapter2").addClass("chapterSelected");
             addSlideContent(slide2, trigger); 
+            doAutoScroll(trigger);
         } 
+
 
         // SLIDE 3
         var slide3 = $("#slide-3");
@@ -230,7 +232,9 @@ $(window).on("scrollstop", {latency: 0}, function() {
             $(".chapter").removeClass("chapterSelected");
             $("#chapter3").addClass("chapterSelected");
             addSlideContent(slide3, trigger); 
-        } 
+            doAutoScroll(trigger); 
+        }
+
 
         // SLIDE 4
         var slide4 = $("#slide-4");
@@ -252,7 +256,22 @@ $(window).on("scrollstop", {latency: 0}, function() {
 
   });
 
+var doAutoScrollTriggerFlag = 0;
 
+function doAutoScroll (trigger) {
+
+    var height = $(".curtainHeaderContainer ").height();
+    var parentSection = trigger.closest('section'); 
+    var nextSlide = parentSection.next();
+
+    if(trigger.isOnScreen(0.5,0.5) && doAutoScrollTriggerFlag === 0) {
+        $(window).scrollTo(trigger, {duration: 500, offset:-height});
+        doAutoScrollTriggerFlag = 1; 
+    } 
+    if(!trigger.isOnScreen(0.1,0.1)) {
+        doAutoScrollTriggerFlag = 0;
+    }
+}
 
 // Adds content and animation to each slide
 var bottomOffsetFlag = true;
@@ -277,6 +296,7 @@ function addSlideContent(this_, trigger) {
             $("#headerSlideContainer").addClass("slideHeaderVis"); // Shows the header of the current slide
 
             $(".curtainContentTabInner").mCustomScrollbar("update");
+            $(".countryLadderContainer").mCustomScrollbar("update");
 
 
             if(bottomOffsetFlag === true) {
@@ -297,6 +317,7 @@ function addSlideContent(this_, trigger) {
 
             bottomOffsetFlag = true;
             $(".curtainContentTabInner").mCustomScrollbar("disable");
+            $(".countryLadderContainer").mCustomScrollbar("disable");
 
             scrollTrigger = true;
             curtainContentBackground.removeClass("curtainContentBackgroundVis");
@@ -400,13 +421,32 @@ $(".chapter").click(function() {
 
 
 
-        $(".curtainContentTabInner").mCustomScrollbar({ 
-            axis:"y", // horizontal scrollbar
-            scrollbarPosition: "outside"
-        });
 
-        $(".curtainContentTabInner").mCustomScrollbar("disable"); // Start disabled to prevent scrolling issues
+// ###################
+// ##  Scrollbars   ##
+// ###################
 
+
+
+$(".curtainContentTabInner").mCustomScrollbar({ 
+    axis:"y",
+    scrollbarPosition: "outside",
+    mouseWheel:{ 
+        preventDefault: false 
+    },
+});
+$(".countryLadderContainer").mCustomScrollbar({
+
+    mouseWheel:{ 
+        preventDefault: true 
+    },
+    advanced: {
+        updateOnContentResize: true
+    }
+});
+
+$(".curtainContentTabInner").mCustomScrollbar("disable"); // Start disabled to prevent scrolling issues
+$(".countryLadderContainer").mCustomScrollbar("disable");
 
 
 
@@ -438,43 +478,29 @@ var tooltip = document.getElementById('mapTooltip');
 $("#map").mousemove(function(e) {
     var x = e.clientX,
         y = e.clientY;
-    tooltip.style.top = (y - 110) + 'px';
+    tooltip.style.top = (y - 120) + 'px';
     tooltip.style.left = (x - 196) + 'px';
 
 });
 
+
+// Mouseover
+
 utfGrid.on('mouseover', function(e) {
 
-    var value = e.data[2011];
-
-    var color =  "#0000ff";
-
-    if(value > 0 && value < 0.629)
-        color =  '#1a9850';
-    else if (value >= 0.629 && value < 1.792)
-        color =  '#66bd63';
-    else if (value >= 1.792 && value < 3.325)
-        color = '#a6d96a';
-    else if (value >= 3.325 && value < 5.557)
-        color = '#d9ef8b';
-    else if (value >= 5.557 && value < 8.8336)
-        color = '#fee08b';
-    else if (value >= 8.8336 && value < 14.136)
-        color = '#fdae61';
-    else if (value >= 14.136 && value < 23.968)
-        color = '#f46d43';
-    else if (value >= 23.968)
-        color = '#d73027';
-    else
-        color ='#000000'
+    var value = e.data[2011],
+        color = setColor(value),
+        isoCode = e.data.ISO3; 
 
 
-    $('#mapTooltipContent').html('<h1>' + e.data.NAME + '</h1>'
+    $('#mapTooltipContent').html('<img src="images/flags/' + isoCode + '.png" height="15" width="20">' 
+                             +  '<h1>' + e.data.NAME + '</h1>'
                              +  '<span>' + 'CO2 Emissions: ' + '<em style="color:' + color +' ;">' + value + '</em>' + '</span>'  
     )
     $('#mapTooltip').addClass('tooltip_hover')
     $('#tooltipArrow').addClass('tooltip_hover')
 });
+
 utfGrid.on('mouseout', function(e) {
     $('#mapTooltip').removeClass('tooltip_hover ')
 });
@@ -482,26 +508,188 @@ utfGrid.on('mouseout', function(e) {
 $('#map').on('mouseout', function(e) {
     $('#mapTooltip').removeClass('tooltip_hover ')
 });
+
+
+
 // Click
 
 utfGrid.on('click', function (e) {
 
     $('#tab-container').easytabs('select', '#curtainContentStatisticsTab');
-    statisticsTabMouseOver();
-    isStatsticTabSelected = true; 
+
+    if(isTextTabSelected)
+        statisticsTabMouseOver();
+
+    isStatsticTabSelected = true;
     isTextTabSelected = false;
+
     textTabMouseOut();
 
 
-    //click events are fired with e.data==null if an area with no hit is clicked
+
+
     if (e.data) {
-            $("#curtainContentStatisticsTabInner").text('click: ' + e.data["2011"] + " // " + e.data.NAME);
-    } else {
-        alert('click: nothing');
+            var value = e.data[2011],
+                color = setColor(value),
+                dataset = parseJSON("json/co2_emissions.json"),
+                iso3_code = e.data.ISO3,
+                rank = getRank(dataset,iso3_code);
+                countryNumber = countCountries(dataset);
+
+            $("#tabFirstCountryName").text(e.data.NAME);
+            $("#cciScoreFirstCountry").text(value);
+            $("#cciScoreFirstCountry").css({color:color});
+            $("#rankScoreFirstCountry").text(rank);
+            $("#rankScoreFirstCountry").css({color:color});
+            $("#totalScoreFirstCountry").text(countryNumber);
+
+        var sortedDataset = getSortedDataset(dataset);
+        var ladder ="",
+            rank = 1,
+            highlight = "transparent";
+            highlightFlag = 0;
+            idToScroll = "";
+            rankToScroll = 0;
+            scrollTo = "";
+
+
+        for(i in sortedDataset) {
+            if(sortedDataset[i][2011] !== null) {
+
+                var iso3_code_for_ladder = sortedDataset[i].country_code; 
+
+                if(sortedDataset[i].country_code === iso3_code) {
+                    highlight = "red";
+                    idToScroll = "countryToScroll";
+                    scrollTo = idToScroll;
+                    rankToScroll = rank;
+                } else {
+                    highlight = "transparent";
+                    idToScroll = "";
+                }
+
+                ladder += "<tr id='" + idToScroll + "' style='background-color:" + highlight + "'>" + 
+                                   "<td>" + "<img height='14' width='22' src='images/flags/" + iso3_code_for_ladder + ".png'>" + "</td>" + 
+                                   "<td>" + sortedDataset[i][2011].toFixed(3) + "</td>" +
+                                   "<td>" + sortedDataset[i].country_name + "</td>" +
+                                   "<td>" + rank + "</tr>"; 
+                rank++;
+            }
+              
+        }
+
+        $("#tabFirstCountryLadder").html(ladder);
+        $("#flagBarFlag1").html('<img src="images/flags/' + iso3_code + '.png">'); 
+
+
+        setTimeout(function() {
+         $("#countryLadderContainerFirst").mCustomScrollbar("scrollTo", "#countryToScroll");           
+     }, 200)
+
+
+        }
+});
+
+// Rightclick
+
+utfGrid.on('contextmenu', function (e) {
+
+    $('#tab-container').easytabs('select', '#curtainContentStatisticsTab');
+
+    if (e.data) {
+        var value = e.data[2011],
+            color = setColor(value);
+            dataset = parseJSON("json/co2_emissions.json"),
+            iso3_code = e.data.ISO3,
+            rank = getRank(dataset,iso3_code);
+            countryNumber = countCountries(dataset);
+
+        if(isTextTabSelected)
+            statisticsTabMouseOver();
+
+        isStatsticTabSelected = true;
+        isTextTabSelected = false;
+
+        textTabMouseOut();
+
+        $("#tabSecondCountryName").text(e.data.NAME);
+        $("#cciScoreSecondCountry").text(value);
+        $("#cciScoreSecondCountry").css({color:color});
+        $("#rankScoreSecondCountry").text(rank);
+        $("#rankScoreSecondCountry").css({color:color});
+        $("#totalScoreSecondCountry").text(countryNumber);
+
+
+        var sortedDataset = getSortedDataset(dataset);
+        var ladder ="",
+            rank = 1,
+            highlight = "transparent";
+            highlightFlag = 0;
+            idToScroll = "";
+            rankToScroll = 0;
+            scrollTo = "";
+
+
+        for(i in sortedDataset) {
+            if(sortedDataset[i][2011] !== null) {
+
+            var iso3_code_for_ladder = sortedDataset[i].country_code; 
+
+                if(sortedDataset[i].country_code === iso3_code) {
+                    highlight = "red";
+                    idToScroll = "countryToScroll2";
+                    scrollTo = idToScroll;
+                    rankToScroll = rank;
+                } else {
+                    highlight = "transparent";
+                    idToScroll = "";
+                }
+
+                ladder += "<tr id='" + idToScroll + "' style='background-color:" + highlight + "'>" + 
+                                   "<td>" + "<img height='14' width='22' src='images/flags/" + iso3_code_for_ladder + ".png'>" + "</td>" + 
+                                   "<td>" + sortedDataset[i][2011].toFixed(3) + "</td>" +
+                                   "<td>" + sortedDataset[i].country_name + "</td>" +
+                                   "<td>" + rank + "</tr>"; 
+                rank++;
+            }
+              
+        }
+
+        $("#tabSecondCountryLadder").html(ladder);
+        $("#flagBarFlag2").html('<img src="images/flags/' + iso3_code + '.png">');  
+
+
+        setTimeout(function() {
+         $("#countryLadderContainerSecond").mCustomScrollbar("scrollTo", "#countryToScroll2");           
+     }, 200)
+
     }
+
 });
 
 map.addLayer(utfGrid);
+
+function setColor(value) {
+    if(value > 0 && value < 0.629)
+        return '#1a9850';
+    else if (value >= 0.629 && value < 1.792)
+        return  '#66bd63';
+    else if (value >= 1.792 && value < 3.325)
+        return '#a6d96a';
+    else if (value >= 3.325 && value < 5.557)
+        return '#d9ef8b';
+    else if (value >= 5.557 && value < 8.8336)
+        return '#fee08b';
+    else if (value >= 8.8336 && value < 14.136)
+        return '#fdae61';
+    else if (value >= 14.136 && value < 23.968)
+        return '#f46d43';
+    else if (value >= 23.968)
+        return '#d73027';
+    else
+        return '#000000';
+}
+
 
 function fadeMapIn() {
     $('.map_container').addClass('map_containerVis')
@@ -605,5 +793,70 @@ $('.resizeMapButton').click(function() {
     expandMap();
 })
 
+
+// ############################
+// ##  Access data via json  ##
+// ############################
+
+
+function parseJSON(data){
+    
+var request = new XMLHttpRequest();
+   request.open("GET", data, false);
+   request.send(false)
+   
+   return JSON.parse(request.responseText);
+   
+}
+
+// Sort the dataset
+
+function getSortedDataset(dataset) {
+    var sorted = dataset.sort(function(a, b) {
+            return a[2011] - b[2011];
+    }); 
+
+    return sorted;
+
+}
+
+//// Get the ranking of the selected country
+
+function getRank(dataset, iso3_code) {
+
+
+        var sortedDataset = getSortedDataset(dataset);
+
+        return getObjectKeyIndex(sortedDataset, iso3_code)
+
+        // Count till the country is found by its ISO code
+        function getObjectKeyIndex(sortedDataset, keyToFind) {
+
+            var i = 1;
+            for (elem in sortedDataset) {
+                    if (sortedDataset[elem].country_code == keyToFind) {
+                        return i;
+                    }
+                    if(sortedDataset[elem][2011] !== null) { // Dont count noData elements(countries)
+                        i++;
+                    }
+            }
+            return null;
+        }
+
+}
+
+// Get the number of countries in the dataset
+
+function countCountries(dataset) {
+
+        var i = 1;
+        for (elem in dataset) {
+                if(dataset[elem][2011] !== null) { // Dont count noData elements(countries)
+                    i++;
+                }
+        }
+        return i;
+    }
 
 });

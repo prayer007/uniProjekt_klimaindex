@@ -24,9 +24,24 @@
 <script src="js/disableScroll.js"></script>
 <script src="js/jquery.easytabs.min.js"></script>
 <script src="js/leaflet.js"></script>
+<script src="js/jquery.scrollTo.min.js"></script>
 <script src="js/leaflet.utfgrid.js"></script>
 <script src="js/jquery.mCustomScrollbar.min.js"></script>
 <script src="js/main.js"></script>
+
+
+<!-- PRELOAD IMAGES -->
+
+<div id="preload"></div>
+
+<script>
+$('#preload').load('preload.php', function(response, status, xhr) {
+$('#preload').remove(); // Remove the div after de images are cached   
+});
+</script>
+
+
+<!-- CONTENT -->
 
 <title>Klimaindex</title>
 </head>
@@ -120,21 +135,55 @@
 					<li class='tab'><a href="#curtainContentStatisticsTab">Required JS</a></li>
 
 				</ul>
-			<div id="curtainContentTextTab">
+			<div id="curtainContentTextTab" class="curtainContentTabInner">
 
 <!-- 				<h2>Lorem Ipsum Dolor</h2> -->
-				<div class="curtainContentTabInner">
+				<div id="curtainContentTextTabInner">
 		        	<span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
 		        	</span>
 		        </div>
 			</div>
 			<div id="curtainContentStatisticsTab">
-			<div id="curtainContentStatisticsTabInner" class="curtainContentTabInner">tztrzrtzrtzrtz
+			<div id="curtainContentStatisticsTabInner" class="curtainContentTabInner">
+				<div id="tabFirstCountry" class="tabCountries">
+					<div class="flagBar">
+						<div id="flagBarFlag1" class="flagBarFlag">
+							<img height="14" width="22" src="images/flags/yyy.png">
+						</div>
+					</div>
+					<h1 id="tabFirstCountryName" class="tabCountryName">Click to show<br> Country</h1>
+					<em id="cciScoreFirstCountry" class="cciScore">--</em><span>CCI Score</span>
+					<div id="tabFirstCountryRank" class="tabCountryRank">
+						<span id="rankCaptionFirstCountry" class="rankCaption">Country<br>Rank</span>
+						<span id="rankScoreFirstCountry" class="rankScore">--</span>
+						<span id="rankCaptionFirstCountry" class="rankCaption">out<br>of</span>
+						<span id="totalScoreFirstCountry" class="totalScore">--</span>
+					</div>
+					<div id="countryLadderContainerFirst"  class="countryLadderContainer">
+						<table id="tabFirstCountryLadder" class="countryLadder"></table>
+					</div>
+				</div>
+				<div id="tabSecondCountry" class="tabCountries">
+					<div class="flagBar">
+						<div id="flagBarFlag2" class="flagBarFlag">
+							<img height="14" width="22" src="images/flags/yyy.png">
+						</div>
+					</div>
+					<h1 id="tabSecondCountryName" class="tabCountryName">Rightclick to show Country</h1>
+					<em id="cciScoreSecondCountry">--</em><span>CCI Score</span>
+					<div id="tabSecondCountryRank" class="tabCountryRank">
+						<span id="rankCaptionSecondCountry" class="rankCaption">Country<br>Rank</span>
+						<span id="rankScoreSecondCountry" class="rankScore">--</span>
+						<span id="rankCaptionSecondCountry" class="rankCaption">out<br>of</span>
+						<span id="totalScoreSecondCountry" class="totalScore">--</span>
+					</div>
+					<div id="countryLadderContainerSecond" class ="countryLadderContainer">
+						<table id="tabSecondCountryLadder" class="countryLadder"></table>
+					</div>
+				</div>
 			</div>
 			</div>
 			</div>
-       		        	<!-- <p>Blablablabalbla</p>
-			        	<span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</span> -->
 
        	</div>
 
@@ -176,13 +225,101 @@
         data-anchor-target="#slide-3"
     >
 
-       <div id="curtainContentContainer">
+              <div id="curtainContentContainer">
        	<div class="curtainContentBackground"></div>
        	<div class="curtainContent">
-       		        	<p>Blablablabalbla</p>
-			        	<span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</span>
+       		<h1>CO2 Emission (metric tons per capita)</h2>
+			<div id="tab-container" class="tab-container">
+				<div class="tabs-container">
+					<div id="tab1" class="tabs">
+					<?xml version="1.0" encoding="utf-8"?>
+					<svg version="1.1" fill="#6688AA" id="tab1_SVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+					viewBox="14 7 72 66" enable-background="new 14 7 72 66" xml:space="preserve">
+					<rect x="14" y="7" width="72" height="6"/>
+					<rect x="14" y="19" width="54" height="6"/>
+					<rect x="14" y="31" width="72" height="6"/>
+					<rect x="14" y="43" width="54" height="6"/>
+					<rect x="14" y="55" width="72" height="6"/>
+					<rect x="14" y="67" width="54" height="6"/>
+					</svg>
+
+					</div>
+					<div id="tab2" class="tabs">
+					<?xml version="1.0" encoding="utf-8"?>
+					<svg version="1.1" id="tab2_SVG" fill="#6688AA" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+					viewBox="12.4 0 75.2 71.2" enable-background="new 12.4 0 75.2 71.2" xml:space="preserve">
+					<rect x="12.4" y="33.2" width="17" height="38"/>
+					<rect x="31.8" y="8.8" width="17" height="62.4"/>
+					<rect x="51.2" y="47.4" width="17" height="23.8"/>
+					<rect x="70.6" y="20.4" width="17" height="50.8"/>
+					</svg>
+					</div>
+				</div>
+
+<!-- 				<ul class='etabs'>
+					<li class='tab'><a href="#curtainContentTextTab">HTML Markup</a></li>
+					<li class='tab'><a href="#curtainContentStatisticsTab">Required JS</a></li>
+
+				</ul> -->
+			<div id="curtainContentTextTab" class="curtainContentTabInner">
+
+<!-- 				<h2>Lorem Ipsum Dolor</h2> -->
+				<div id="curtainContentTextTabInner">
+		        	<span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+		        	</span>
+		        </div>
+			</div>
+			<div id="curtainContentStatisticsTab">
+			<div id="curtainContentStatisticsTabInner" class="curtainContentTabInner">
+				<div id="tabFirstCountry" class="tabCountries">
+					<div class="flagBar">
+						<div id="flagBarFlag1" class="flagBarFlag">
+							<img height="14" width="22" src="images/flags/yyy.png">
+						</div>
+					</div>
+					<h1 id="tabFirstCountryName" class="tabCountryName">Click to show<br> Country</h1>
+					<em id="cciScoreFirstCountry" class="cciScore">--</em><span>CCI Score</span>
+					<div id="tabFirstCountryRank" class="tabCountryRank">
+						<span id="rankCaptionFirstCountry" class="rankCaption">Country<br>Rank</span>
+						<span id="rankScoreFirstCountry" class="rankScore">--</span>
+						<span id="rankCaptionFirstCountry" class="rankCaption">out<br>of</span>
+						<span id="totalScoreFirstCountry" class="totalScore">--</span>
+					</div>
+					<div id="countryLadderContainerFirst"  class="countryLadderContainer">
+						<table id="tabFirstCountryLadder" class="countryLadder"></table>
+					</div>
+				</div>
+				<div id="tabSecondCountry" class="tabCountries">
+					<div class="flagBar">
+						<div id="flagBarFlag2" class="flagBarFlag">
+							<img height="14" width="22" src="images/flags/yyy.png">
+						</div>
+					</div>
+					<h1 id="tabSecondCountryName" class="tabCountryName">Rightclick to show Country</h1>
+					<em id="cciScoreSecondCountry">--</em><span>CCI Score</span>
+					<div id="tabSecondCountryRank" class="tabCountryRank">
+						<span id="rankCaptionSecondCountry" class="rankCaption">Country<br>Rank</span>
+						<span id="rankScoreSecondCountry" class="rankScore">--</span>
+						<span id="rankCaptionSecondCountry" class="rankCaption">out<br>of</span>
+						<span id="totalScoreSecondCountry" class="totalScore">--</span>
+					</div>
+					<div id="countryLadderContainerSecond" class ="countryLadderContainer">
+						<table id="tabSecondCountryLadder" class="countryLadder"></table>
+					</div>
+				</div>
+			</div>
+			</div>
+			</div>
 
        	</div>
+
+       		<!-- map -->
+       	    <div class="map_container">
+				<div id="map">
+				</div>
+				<div class="resizeMapButton"></div>
+			</div>
+
 	        <div class="slideBackground"
 	        	 data-bottom-top="opacity:0"
 	        	 data-bottom="opacity:0.7"
