@@ -51,25 +51,28 @@ left:-1000000000px;
 .tabs-container {
 	margin: 0 0 0 10%; 
 }
-#tab1 {
-	float: left;
-}
-#tab1 svg{
-	height: 100%;
-}
-#tab2 {
-	overflow: hidden;
-}
-#tab2 svg {
-	height: 100%;
-}
 
-.tabs {
+.tabs1 {
+	float: left;
 	height: 7%;
 	width: 10%;
 	cursor: pointer;
 	margin:0 8% 0 0;
 }
+.tabs2 {
+	height: 7%;
+	width: 10%;
+	cursor: pointer;
+	margin:0 8% 0 0;
+	overflow: hidden;
+}
+.tabs1 svg {
+	height: 100%;
+}
+.tabs2 svg {
+	height: 100%;
+}
+
 /*.tabsIcon {
 	height: 100%;
 	width: 30%;

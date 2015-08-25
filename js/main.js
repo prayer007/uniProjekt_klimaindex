@@ -34,8 +34,8 @@ $(".trigger").css("height",triggerHeight);
 //// FIRST TAB
 
 
-function textTabMouseOver() {
-    var thisSvg  = $("#tab1_SVG");
+function textTabMouseOver(svgTab1) {
+    var thisSvg  = $("#" + svgTab1);
     var elements = thisSvg.children();
     var animSpeed = 30;
 
@@ -66,9 +66,9 @@ setTimeout(function() {
      }
      }, animSpeed * elements.length);
 }
-function textTabMouseOut() {
+function textTabMouseOut(svgTab1) {
 
-    var thisSvg = $("#tab1_SVG");
+    var thisSvg = $("#" + svgTab1);
 
     var elements = thisSvg.children();
     var origFill = thisSvg.attr('fill');
@@ -79,12 +79,12 @@ function textTabMouseOut() {
 //// SECOND TAB
 
 var isStatsticTabSelected = false;
-function statisticsTabMouseOver() {
+function statisticsTabMouseOver(svgTab2) {
 
 
 
     // First bar
-    var firstElement = $("#tab2_SVG").children().first();
+    var firstElement = $("#" + svgTab2).children().first();
     $(firstElement).velocity({
         fill:"#ffffff",
         height:48,
@@ -118,13 +118,14 @@ function statisticsTabMouseOver() {
 }
 
 var isTextTabSelected = false;
-function statisticsTabMouseOut() {
+function statisticsTabMouseOut(svgTab2) {
 
 
- var origFill = $("#tab2_SVG").attr('fill'); 
+ var origFill = $("#" + svgTab2).attr('fill'); 
 
     // First bar
-    var firstElement = $("#tab2_SVG").children().first();
+    var firstElement = $("#" + svgTab2).children().first();
+
     $(firstElement).velocity({
         fill:origFill,
         height:38,
@@ -158,29 +159,58 @@ function statisticsTabMouseOut() {
 // ####################################
 // ##  Create Tabs for the textbox   ##
 // ####################################
-$('#tab-container').easytabs();
+var textTabMouseOverFlag = 0;
+function enableTabs(tabContainer, tab1 ,tab2, etab1, etab2, svgTab1, svgTab2) {
+$("#" + tabContainer).easytabs();
 
-textTabMouseOver(); // Start with tab1 selected
-isStatsticTabSelected = false;
-isTextTabSelected = true;
+// if(textTabMouseOverFlag === 0) {    // Select it only once on start
+//     textTabMouseOver(svgTab1); // Start with tab1 selected
+//     textTabMouseOverFlag = 1;
+// }
 
-$('#tab1').click(function(){
-    $('#tab-container').easytabs('select', '#curtainContentTextTab');
+isStatsticTabSelected = true;
+isTextTabSelected = false;
+var isStart = true;
+
+$("#" + tab1).click(function(){
+    $("#" + tabContainer).easytabs('select', etab1);
     isTextTabSelected = true;
     if(isStatsticTabSelected) {
-        statisticsTabMouseOut();
-        textTabMouseOver();
+        textTabMouseOver(svgTab1);
+    }
+    if(isStatsticTabSelected && !isStart) {
+        statisticsTabMouseOut(svgTab2);
     }
     isStatsticTabSelected = false;
+    isStart = false;
 
 });
-$('#tab2').click(function(){
-    $('#tab-container').easytabs('select', '#curtainContentStatisticsTab');
+$("#" + tab2).click(function(){
+    $("#" + tabContainer).easytabs('select', etab2);
     isStatsticTabSelected = true;
     if(isTextTabSelected)
-        statisticsTabMouseOver();
-    textTabMouseOut();
+        statisticsTabMouseOver(svgTab2);
+    textTabMouseOut(svgTab1);
     isTextTabSelected = false;
+});
+}
+
+
+$( "section" ).each(function() {
+  var sectionId = $(this).attr('id');
+
+  var tabContainerId = $("#" + sectionId).find(".tab-container").attr("id"),
+      tab1Id = $("#" + tabContainerId).find(".tabs1").attr("id"),
+      tab2Id = $("#" + tabContainerId).find(".tabs2").attr("id"),
+      etab1 = $("#" + tabContainerId).find("a:first").attr("href"),
+      etab2 = $("#" + tabContainerId).find("a:last").attr("href"),
+      svgTab1 = $("#" + sectionId).find("svg:first").attr("id"),
+      svgTab2 = $("#" + sectionId).find("svg:last").attr("id");
+
+  console.log(tabContainerId + " " + tab1Id + " " + tab2Id + " " + etab1 + " " + etab2 + " " + svgTab1 + " " + svgTab2); 
+
+  enableTabs(tabContainerId, tab1Id, tab2Id, etab1, etab2, svgTab1, svgTab2);
+
 });
 
 
@@ -211,6 +241,7 @@ $('#tab2').click(function(){
 
 
 var scrollTrigger = true;
+
 $(window).on("scrollstop", {latency: 0}, function() {
 
 
@@ -221,6 +252,7 @@ $(window).on("scrollstop", {latency: 0}, function() {
             $(".chapter").removeClass("chapterSelected");
             $("#chapter2").addClass("chapterSelected");
             addSlideContent(slide2, trigger); 
+            console.log("asdf")
             doAutoScroll(trigger);
         } 
 
@@ -275,63 +307,96 @@ function doAutoScroll (trigger) {
 
 // Adds content and animation to each slide
 var bottomOffsetFlag = true;
+var selectTabFlag2 = false;
+var isSlideOnScreen = false,
+    isSlideNotOnScreen = false;
+
 function addSlideContent(this_, trigger) {
 
-        var nextSlide = this_.next();
-        var curtainContentContainer = this_.children().children();
-        var curtainContentBackground = curtainContentContainer.children().first();
-        var curtainContent = curtainContentBackground.next();
-        var mapContainer = curtainContent.next();
+        var nextSlide = this_.next(),
+            curtainContentContainer = this_.children().children(),
+            curtainContentBackground = curtainContentContainer.children().first(),
+            curtainContent = curtainContentBackground.next(),
+            mapContainer = curtainContent.next();
+
+        var sectionId = $(this_).attr('id'),
+            tabContainerId = $("#" + sectionId).find(".tab-container").attr("id"),
+            tab1Id = $("#" + tabContainerId).find(".tabs1").attr("id"),
+            tab2Id = $("#" + tabContainerId).find(".tabs2").attr("id"),
+            etab1 = $("#" + tabContainerId).find("a:first").attr("href"),
+            svgTab1 = $("#" + sectionId).find("svg:first").attr("id"),
+            svgTab2 = $("#" + sectionId).find("svg:last").attr("id");
+
 
         // If the trigger is 80% visible on screen fadeIn the content
         if(trigger.isOnScreen(0.8,0.8) && (!nextSlide.isOnScreen(0,0))) {
-            if(scrollTrigger === true) {
-                $("body").disablescroll();
-            }
-                setTimeout(function(){ $("body").disablescroll("undo"); scrollTrigger = false; }, 1500);
+            if(isSlideOnScreen === false) { // Trigger the slide in of the content only once to prevent lags
+                isSlideOnScreen = true;
 
-            curtainContentBackground.addClass("curtainContentBackgroundVis"); // Fades the background under the text
-            curtainContent.addClass("curtainContentVis"); // Fades the text content of the curtain
+                if(scrollTrigger === true) {
+                    $("body").disablescroll();
+                }
+                    setTimeout(function(){ $("body").disablescroll("undo"); scrollTrigger = false; }, 1500);
 
-            $("#headerSlideContainer").addClass("slideHeaderVis"); // Shows the header of the current slide
+                curtainContentBackground.addClass("curtainContentBackgroundVis"); // Fades the background under the text
+                curtainContent.addClass("curtainContentVis"); // Fades the text content of the curtain
 
-            $(".curtainContentTabInner").mCustomScrollbar("update");
-            $(".countryLadderContainer").mCustomScrollbar("update");
+                $("#headerSlideContainer").addClass("slideHeaderVis"); // Shows the header of the current slide
 
-
-            if(bottomOffsetFlag === true) {
-
-                var this_ = $('.map_container');
-                
-                var bottom = findOffsetTop()
+                $(".curtainContentTabInner").mCustomScrollbar("update");
+                $(".countryLadderContainer").mCustomScrollbar("update");
 
                 setTimeout(function(){
-                    $('.map_container').css({bottom:bottom})
-                bottomOffsetFlag = false; }, 250);
-            } 
-            fadeMapIn();                         
+                    if(bottomOffsetFlag === true) {
+                        
+                        var bottom = findOffsetTop()
+
+                            $('.map_container').css({bottom:bottom})
+                        bottomOffsetFlag = false;
+                    } 
+                }, 300);
+
+
+                $("#" + tab1Id).trigger("click"); 
+
+                selectTabFlag2 = false; 
+                isSlideNotOnScreen = false;
+                fadeMapIn(); 
+            }                        
 
         }
         else {
-            $('.map_container').css({bottom:0}) // Get the map container to its original position
+            if(isSlideNotOnScreen === false) { 
+                isSlideNotOnScreen = true;
 
-            bottomOffsetFlag = true;
-            $(".curtainContentTabInner").mCustomScrollbar("disable");
-            $(".countryLadderContainer").mCustomScrollbar("disable");
+                $('.map_container').css({bottom:0}) // Get the map container to its original position
 
-            scrollTrigger = true;
-            curtainContentBackground.removeClass("curtainContentBackgroundVis");
-            curtainContent.removeClass("curtainContentVis");
+                isSlideOnScreen = false;
 
-            fadeMapOut();
+                if(selectTabFlag2 === false) { 
+                    selectTabFlag2 = true; 
+                    setTimeout(function(){ 
+                        $("#" + tab1Id).trigger("click"); 
+                    }, 500); 
+                }
 
-            $("#headerSlideContainer").removeClass("slideHeaderVis");
-        }
+                bottomOffsetFlag = true;
+                selectTabFlag = false; 
 
-        // If the trigger is visible only half of the screen reduce scroll speed
-        if(trigger.isOnScreen(0.5,0.5)) {
-            //jQuery.scrollSpeed(20, 800);
-        }
+                $(".curtainContentTabInner").mCustomScrollbar("disable");
+                $(".countryLadderContainer").mCustomScrollbar("disable");
+
+                scrollTrigger = true;
+                curtainContentBackground.removeClass("curtainContentBackgroundVis");
+                curtainContent.removeClass("curtainContentVis");
+
+
+                fadeMapOut();
+
+                $("#headerSlideContainer").removeClass("slideHeaderVis");
+            }
+    }
+
 }
 
 
@@ -515,25 +580,17 @@ $('#map').on('mouseout', function(e) {
 
 utfGrid.on('click', function (e) {
 
-    $('#tab-container').easytabs('select', '#curtainContentStatisticsTab');
 
-    if(isTextTabSelected)
-        statisticsTabMouseOver();
-
-    isStatsticTabSelected = true;
-    isTextTabSelected = false;
-
-    textTabMouseOut();
-
-
+    $("#tab2_slide2").trigger("click");
 
 
     if (e.data) {
+
             var value = e.data[2011],
                 color = setColor(value),
                 dataset = parseJSON("json/co2_emissions.json"),
                 iso3_code = e.data.ISO3,
-                rank = getRank(dataset,iso3_code);
+                rank = getRank(dataset,iso3_code),
                 countryNumber = countCountries(dataset);
 
             $("#tabFirstCountryName").text(e.data.NAME);
@@ -546,10 +603,10 @@ utfGrid.on('click', function (e) {
         var sortedDataset = getSortedDataset(dataset);
         var ladder ="",
             rank = 1,
-            highlight = "transparent";
-            highlightFlag = 0;
-            idToScroll = "";
-            rankToScroll = 0;
+            highlight = "transparent",
+            highlightFlag = 0,
+            idToScroll = "",
+            rankToScroll = 0,
             scrollTo = "";
 
 
@@ -559,7 +616,7 @@ utfGrid.on('click', function (e) {
                 var iso3_code_for_ladder = sortedDataset[i].country_code; 
 
                 if(sortedDataset[i].country_code === iso3_code) {
-                    highlight = "red";
+                    highlight = "grey";
                     idToScroll = "countryToScroll";
                     scrollTo = idToScroll;
                     rankToScroll = rank;
@@ -578,8 +635,8 @@ utfGrid.on('click', function (e) {
               
         }
 
-        $("#tabFirstCountryLadder").html(ladder);
-        $("#flagBarFlag1").html('<img src="images/flags/' + iso3_code + '.png">'); 
+         $("#tabFirstCountryLadder").html(ladder);
+         $("#flagBarFlag1").html('<img src="images/flags/' + iso3_code + '.png">'); 
 
 
         setTimeout(function() {
@@ -594,14 +651,14 @@ utfGrid.on('click', function (e) {
 
 utfGrid.on('contextmenu', function (e) {
 
-    $('#tab-container').easytabs('select', '#curtainContentStatisticsTab');
+    $('#tab-container').easytabs('select', '#curtainContentStatisticsTab_slide2');
 
     if (e.data) {
         var value = e.data[2011],
-            color = setColor(value);
+            color = setColor(value),
             dataset = parseJSON("json/co2_emissions.json"),
             iso3_code = e.data.ISO3,
-            rank = getRank(dataset,iso3_code);
+            rank = getRank(dataset,iso3_code),
             countryNumber = countCountries(dataset);
 
         if(isTextTabSelected)
@@ -623,10 +680,10 @@ utfGrid.on('contextmenu', function (e) {
         var sortedDataset = getSortedDataset(dataset);
         var ladder ="",
             rank = 1,
-            highlight = "transparent";
-            highlightFlag = 0;
-            idToScroll = "";
-            rankToScroll = 0;
+            highlight = "transparent",
+            highlightFlag = 0,
+            idToScroll = "",
+            rankToScroll = 0,
             scrollTo = "";
 
 
@@ -636,7 +693,7 @@ utfGrid.on('contextmenu', function (e) {
             var iso3_code_for_ladder = sortedDataset[i].country_code; 
 
                 if(sortedDataset[i].country_code === iso3_code) {
-                    highlight = "red";
+                    highlight = "grey";
                     idToScroll = "countryToScroll2";
                     scrollTo = idToScroll;
                     rankToScroll = rank;
@@ -660,7 +717,7 @@ utfGrid.on('contextmenu', function (e) {
 
 
         setTimeout(function() {
-         $("#countryLadderContainerSecond").mCustomScrollbar("scrollTo", "#countryToScroll2");           
+          $("#countryLadderContainerSecond").mCustomScrollbar("scrollTo", "#countryToScroll2");           
      }, 200)
 
     }
