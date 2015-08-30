@@ -35,11 +35,11 @@ $(".trigger").css("height",triggerHeight);
 
 
 function textTabMouseOver(svgTab1) {
-    var thisSvg  = $("#" + svgTab1);
-    var elements = thisSvg.children();
+
+    var elements = svgTab1.children();
     var animSpeed = 30;
 
-    $(thisSvg).velocity({fill:'#ffffff'})
+    svgTab1.velocity({fill:'#ffffff'})
 
     for (var i = 0; i<elements.length; i++) {
 
@@ -68,12 +68,10 @@ setTimeout(function() {
 }
 function textTabMouseOut(svgTab1) {
 
-    var thisSvg = $("#" + svgTab1);
+    var elements = svgTab1.children(),
+        origFill = svgTab1.attr('fill');
 
-    var elements = thisSvg.children();
-    var origFill = thisSvg.attr('fill');
-
-    thisSvg.velocity({fill:origFill})
+    svgTab1.velocity({fill:origFill})
 }
 
 //// SECOND TAB
@@ -84,7 +82,7 @@ function statisticsTabMouseOver(svgTab2) {
 
 
     // First bar
-    var firstElement = $("#" + svgTab2).children().first();
+    var firstElement = svgTab2.children().first();
     $(firstElement).velocity({
         fill:"#ffffff",
         height:48,
@@ -121,10 +119,10 @@ var isTextTabSelected = false;
 function statisticsTabMouseOut(svgTab2) {
 
 
- var origFill = $("#" + svgTab2).attr('fill'); 
+ var origFill = svgTab2.attr('fill'); 
 
     // First bar
-    var firstElement = $("#" + svgTab2).children().first();
+    var firstElement = svgTab2.children().first();
 
     $(firstElement).velocity({
         fill:origFill,
@@ -161,7 +159,8 @@ function statisticsTabMouseOut(svgTab2) {
 // ####################################
 var textTabMouseOverFlag = 0;
 function enableTabs(tabContainer, tab1 ,tab2, etab1, etab2, svgTab1, svgTab2) {
-$("#" + tabContainer).easytabs();
+
+tabContainer.easytabs();
 
 // if(textTabMouseOverFlag === 0) {    // Select it only once on start
 //     textTabMouseOver(svgTab1); // Start with tab1 selected
@@ -172,8 +171,8 @@ isStatsticTabSelected = true;
 isTextTabSelected = false;
 var isStart = true;
 
-$("#" + tab1).click(function(){
-    $("#" + tabContainer).easytabs('select', etab1);
+tab1.click(function(){
+    tabContainer.easytabs('select', etab1);
     isTextTabSelected = true;
     if(isStatsticTabSelected) {
         textTabMouseOver(svgTab1);
@@ -185,8 +184,9 @@ $("#" + tab1).click(function(){
     isStart = false;
 
 });
-$("#" + tab2).click(function(){
-    $("#" + tabContainer).easytabs('select', etab2);
+
+tab2.click(function(){
+    tabContainer.easytabs('select', etab2);
     isStatsticTabSelected = true;
     if(isTextTabSelected)
         statisticsTabMouseOver(svgTab2);
@@ -196,20 +196,42 @@ $("#" + tab2).click(function(){
 }
 
 
-$( "section" ).each(function() {
-  var sectionId = $(this).attr('id');
+$("section").each(function() {
 
-  var tabContainerId = $("#" + sectionId).find(".tab-container").attr("id"),
-      tab1Id = $("#" + tabContainerId).find(".tabs1").attr("id"),
-      tab2Id = $("#" + tabContainerId).find(".tabs2").attr("id"),
-      etab1 = $("#" + tabContainerId).find("a:first").attr("href"),
-      etab2 = $("#" + tabContainerId).find("a:last").attr("href"),
-      svgTab1 = $("#" + sectionId).find("svg:first").attr("id"),
-      svgTab2 = $("#" + sectionId).find("svg:last").attr("id");
+var section = $(this);
 
-  console.log(tabContainerId + " " + tab1Id + " " + tab2Id + " " + etab1 + " " + etab2 + " " + svgTab1 + " " + svgTab2); 
+  var tabContainer = section.find(".tab-container"),
+      tab1 = tabContainer.find(".tabs1"),
+      tab2 = tabContainer.find(".tabs2"),
+      etab1 = tabContainer.find("a:first").attr("href"),
+      etab2 = tabContainer.find("a:last").attr("href"),
+      svgTab1 = section.find("svg:first"),
+      svgTab2 = section.find("svg:last");
 
-  enableTabs(tabContainerId, tab1Id, tab2Id, etab1, etab2, svgTab1, svgTab2);
+ // console.log(tabContainer + " " + tab1 + " " + tab2 + " " + etab1 + " " + etab2 + " " + svgTab1 + " " + svgTab2); 
+
+  enableTabs(tabContainer, tab1, tab2, etab1, etab2, svgTab1, svgTab2);
+// 1 and 2 stands for first and second country
+
+var mapId = section.find(".map").attr("id"),
+    countryName1 = section.find(".tabFirstCountryName"),
+    countryName2 = section.find(".tabSecondCountryName"),
+    score1 = section.find(".cciScoreFirstCountry"),
+    score2 = section.find(".cciScoreSecondCountry"),
+    rank1 = section.find(".rankScoreFirstCountry"),
+    rank2 = section.find(".rankScoreSecondCountry"),
+    totalScore1 = section.find(".totalScoreFirstCountry"),
+    totalScore2 = section.find(".totalScoreSecondCountry"),
+    countryLadder1 = section.find(".tabFirstCountryLadder"),
+    countryLadder2 = section.find(".tabSecondCountryLadder"),
+    flagBar1 = section.find(".flagBarFlag1"),
+    flagBar2 = section.find(".flagBarFlag2"),
+    countryLadderContainer1 = section.find("[secClass='countryLadderContainerFirst']"),
+    countryLadderContainer2 = section.find("[secClass='countryLadderContainerSecond']");
+
+if(mapId) {
+    createMap(mapId,countryName1,countryName2,score1,score2,rank1,rank2,totalScore1,totalScore2,countryLadder1,countryLadder2,flagBar1,flagBar2,countryLadderContainer1,countryLadderContainer2,tab1,tab2);
+}
 
 });
 
@@ -244,47 +266,55 @@ var scrollTrigger = true;
 
 $(window).on("scrollstop", {latency: 0}, function() {
 
+$("section").each(function() {
 
-        // SLIDE 2
-        var slide2 = $("#slide-2");
-        var trigger = $("#triggerSlide2");
-        if(slide2.isOnScreen(0.3,0.3)) { 
-            $(".chapter").removeClass("chapterSelected");
-            $("#chapter2").addClass("chapterSelected");
-            addSlideContent(slide2, trigger); 
-            console.log("asdf")
-            doAutoScroll(trigger);
+var slide = $(this);
+
+        if(slide.isOnScreen(0.3,0.3)) { 
+            console.log(slide)
         } 
 
 
-        // SLIDE 3
-        var slide3 = $("#slide-3");
-        var trigger = $("#triggerSlide3");
-        if(slide3.isOnScreen(0.3,0.3)) { 
-            $(".chapter").removeClass("chapterSelected");
-            $("#chapter3").addClass("chapterSelected");
-            addSlideContent(slide3, trigger); 
-            doAutoScroll(trigger); 
-        }
+});
+        // // SLIDE 2
+        // var slide2 = $("#slide-2");
+        // var trigger = $("#triggerSlide2");
+        // if(slide2.isOnScreen(0.3,0.3)) { 
+        //     $(".chapter").removeClass("chapterSelected");
+        //     $("#chapter2").addClass("chapterSelected");
+        //     addSlideContent(slide2, trigger); 
+        //     doAutoScroll(trigger);
+        // } 
 
 
-        // SLIDE 4
-        var slide4 = $("#slide-4");
-        var trigger = $("#triggerSlide4");
-        if(slide4.isOnScreen(0.3,0.3)) { 
-            $(".chapter").removeClass("chapterSelected");
-            $("#chapter4").addClass("chapterSelected");
-            addSlideContent(slide4, trigger); // Only excute this function if the slide is on screen,
-        }                                     // else each funtion will be triggered and impair performance
+        // // SLIDE 3
+        // var slide3 = $("#slide-3");
+        // var trigger = $("#triggerSlide3");
+        // if(slide3.isOnScreen(0.3,0.3)) { 
+        //     $(".chapter").removeClass("chapterSelected");
+        //     $("#chapter3").addClass("chapterSelected");
+        //     addSlideContent(slide3, trigger); 
+        //     doAutoScroll(trigger); 
+        // }
 
-         // SLIDE 5
-        var slide5 = $("#slide-5");
-        var trigger = $("#triggerSlide5");
-        if(slide5.isOnScreen(0.3,0.3)) {        
-            $(".chapter").removeClass("chapterSelected");
-            $("#chapter5").addClass("chapterSelected");
-            addSlideContent(slide5, trigger);
-        }
+
+        // // SLIDE 4
+        // var slide4 = $("#slide-4");
+        // var trigger = $("#triggerSlide4");
+        // if(slide4.isOnScreen(0.3,0.3)) { 
+        //     $(".chapter").removeClass("chapterSelected");
+        //     $("#chapter4").addClass("chapterSelected");
+        //     addSlideContent(slide4, trigger); // Only excute this function if the slide is on screen,
+        // }                                     // else each funtion will be triggered and impair performance
+
+        //  // SLIDE 5
+        // var slide5 = $("#slide-5");
+        // var trigger = $("#triggerSlide5");
+        // if(slide5.isOnScreen(0.3,0.3)) {        
+        //     $(".chapter").removeClass("chapterSelected");
+        //     $("#chapter5").addClass("chapterSelected");
+        //     addSlideContent(slide5, trigger);
+        // }
 
   });
 
@@ -349,9 +379,9 @@ function addSlideContent(this_, trigger) {
                 setTimeout(function(){
                     if(bottomOffsetFlag === true) {
                         
-                        var bottom = findOffsetTop()
+                        var bottom = findOffsetTop(mapContainer)
 
-                            $('.map_container').css({bottom:bottom})
+                            mapContainer.css({bottom:bottom})
                         bottomOffsetFlag = false;
                     } 
                 }, 300);
@@ -361,7 +391,7 @@ function addSlideContent(this_, trigger) {
 
                 selectTabFlag2 = false; 
                 isSlideNotOnScreen = false;
-                fadeMapIn(); 
+                fadeMapIn(mapContainer); 
             }                        
 
         }
@@ -369,7 +399,7 @@ function addSlideContent(this_, trigger) {
             if(isSlideNotOnScreen === false) { 
                 isSlideNotOnScreen = true;
 
-                $('.map_container').css({bottom:0}) // Get the map container to its original position
+                mapContainer.css({bottom:0}) // Get the map container to its original position
 
                 isSlideOnScreen = false;
 
@@ -391,7 +421,7 @@ function addSlideContent(this_, trigger) {
                 curtainContent.removeClass("curtainContentVis");
 
 
-                fadeMapOut();
+                fadeMapOut(mapContainer);
 
                 $("#headerSlideContainer").removeClass("slideHeaderVis");
             }
@@ -520,18 +550,26 @@ $(".countryLadderContainer").mCustomScrollbar("disable");
 // ##  Interactive map  ##
 // #######################
 
-map = L.map('map', {
+
+
+
+function createMap(mapId,countryName1,countryName2,score1,score2,rank1,rank2,totalScore1,totalScore2,countryLadder1,countryLadder2,flagBar1,flagBar2,countryLadderContainer1,countryLadderContainer2,tab1,tab2) {
+
+// The mapId is the root to its tiles
+
+window["map_" + mapId] = L.map(mapId, {
         maxZoom: 6
 }).setView([30, 15], 1);
 
 
-L.tileLayer('tiles/{z}/{x}/{y}.png', {
+
+L.tileLayer('tiles/'+ mapId + '/{z}/{x}/{y}.png', {
     attribution: '&copy; Manuel Strohmaier'
-}).addTo(map);
+}).addTo(window["map_" + mapId]);
 
 
 
-var utfGrid = new L.UtfGrid('tiles/{z}/{x}/{y}.grid.json', {
+window["utfGrid_" + mapId] = new L.UtfGrid('tiles/' + mapId +'/{z}/{x}/{y}.grid.json', {
     useJsonP: false
 });
 
@@ -540,7 +578,7 @@ var utfGrid = new L.UtfGrid('tiles/{z}/{x}/{y}.grid.json', {
 
 var tooltip = document.getElementById('mapTooltip');
 
-$("#map").mousemove(function(e) {
+$("#" + mapId).mousemove(function(e) {
     var x = e.clientX,
         y = e.clientY;
     tooltip.style.top = (y - 120) + 'px';
@@ -551,7 +589,7 @@ $("#map").mousemove(function(e) {
 
 // Mouseover
 
-utfGrid.on('mouseover', function(e) {
+window["utfGrid_" + mapId].on('mouseover', function(e) {
 
     var value = e.data[2011],
         color = setColor(value),
@@ -566,11 +604,11 @@ utfGrid.on('mouseover', function(e) {
     $('#tooltipArrow').addClass('tooltip_hover')
 });
 
-utfGrid.on('mouseout', function(e) {
+window["utfGrid_" + mapId].on('mouseout', function(e) {
     $('#mapTooltip').removeClass('tooltip_hover ')
 });
 
-$('#map').on('mouseout', function(e) {
+$("#" + mapId).on('mouseout', function(e) {
     $('#mapTooltip').removeClass('tooltip_hover ')
 });
 
@@ -578,27 +616,27 @@ $('#map').on('mouseout', function(e) {
 
 // Click
 
-utfGrid.on('click', function (e) {
+window["utfGrid_" + mapId].on('click', function (e) {
 
 
-    $("#tab2_slide2").trigger("click");
+    tab2.trigger("click");
 
 
     if (e.data) {
 
-            var value = e.data[2011],
-                color = setColor(value),
-                dataset = parseJSON("json/co2_emissions.json"),
-                iso3_code = e.data.ISO3,
-                rank = getRank(dataset,iso3_code),
-                countryNumber = countCountries(dataset);
+        var value = e.data[2011],
+            color = setColor(value),
+            dataset = parseJSON("json/co2_emissions.json"),
+            iso3_code = e.data.ISO3,
+            rank = getRank(dataset,iso3_code),
+            countryNumber = countCountries(dataset);
 
-            $("#tabFirstCountryName").text(e.data.NAME);
-            $("#cciScoreFirstCountry").text(value);
-            $("#cciScoreFirstCountry").css({color:color});
-            $("#rankScoreFirstCountry").text(rank);
-            $("#rankScoreFirstCountry").css({color:color});
-            $("#totalScoreFirstCountry").text(countryNumber);
+            countryName1.text(e.data.NAME);
+            score1.text(value);
+            score1.css({color:color});
+            rank1.text(rank);
+            rank1.css({color:color});
+            totalScore1.text(countryNumber);
 
         var sortedDataset = getSortedDataset(dataset);
         var ladder ="",
@@ -617,8 +655,8 @@ utfGrid.on('click', function (e) {
 
                 if(sortedDataset[i].country_code === iso3_code) {
                     highlight = "grey";
-                    idToScroll = "countryToScroll";
-                    scrollTo = idToScroll;
+                    idToScroll = "countryToScroll_" + mapId;
+                    scrollTo = "#" + idToScroll;
                     rankToScroll = rank;
                 } else {
                     highlight = "transparent";
@@ -635,12 +673,12 @@ utfGrid.on('click', function (e) {
               
         }
 
-         $("#tabFirstCountryLadder").html(ladder);
-         $("#flagBarFlag1").html('<img src="images/flags/' + iso3_code + '.png">'); 
+         countryLadder1.html(ladder);
+         flagBar1.html('<img src="images/flags/' + iso3_code + '.png">'); 
 
 
         setTimeout(function() {
-         $("#countryLadderContainerFirst").mCustomScrollbar("scrollTo", "#countryToScroll");           
+         countryLadderContainer1.mCustomScrollbar("scrollTo", scrollTo);           
      }, 200)
 
 
@@ -649,9 +687,9 @@ utfGrid.on('click', function (e) {
 
 // Rightclick
 
-utfGrid.on('contextmenu', function (e) {
+window["utfGrid_" + mapId].on('contextmenu', function (e) {
 
-    $('#tab-container').easytabs('select', '#curtainContentStatisticsTab_slide2');
+    tab2.trigger("click");
 
     if (e.data) {
         var value = e.data[2011],
@@ -661,20 +699,13 @@ utfGrid.on('contextmenu', function (e) {
             rank = getRank(dataset,iso3_code),
             countryNumber = countCountries(dataset);
 
-        if(isTextTabSelected)
-            statisticsTabMouseOver();
 
-        isStatsticTabSelected = true;
-        isTextTabSelected = false;
-
-        textTabMouseOut();
-
-        $("#tabSecondCountryName").text(e.data.NAME);
-        $("#cciScoreSecondCountry").text(value);
-        $("#cciScoreSecondCountry").css({color:color});
-        $("#rankScoreSecondCountry").text(rank);
-        $("#rankScoreSecondCountry").css({color:color});
-        $("#totalScoreSecondCountry").text(countryNumber);
+        countryName2.text(e.data.NAME);
+        score2.text(value);
+        score2.css({color:color});
+        rank2.text(rank);
+        rank2.css({color:color});
+        totalScore2.text(countryNumber);
 
 
         var sortedDataset = getSortedDataset(dataset);
@@ -694,8 +725,8 @@ utfGrid.on('contextmenu', function (e) {
 
                 if(sortedDataset[i].country_code === iso3_code) {
                     highlight = "grey";
-                    idToScroll = "countryToScroll2";
-                    scrollTo = idToScroll;
+                    idToScroll = "countryToScroll2_" + mapId;
+                    scrollTo = "#" + idToScroll;
                     rankToScroll = rank;
                 } else {
                     highlight = "transparent";
@@ -712,19 +743,27 @@ utfGrid.on('contextmenu', function (e) {
               
         }
 
-        $("#tabSecondCountryLadder").html(ladder);
-        $("#flagBarFlag2").html('<img src="images/flags/' + iso3_code + '.png">');  
+        countryLadder2.html(ladder);
+        flagBar2.html('<img src="images/flags/' + iso3_code + '.png">');  
 
 
         setTimeout(function() {
-          $("#countryLadderContainerSecond").mCustomScrollbar("scrollTo", "#countryToScroll2");           
+          countryLadderContainer2.mCustomScrollbar("scrollTo", scrollTo);           
      }, 200)
 
     }
 
 });
 
-map.addLayer(utfGrid);
+window["map_" + mapId].addLayer(window["utfGrid_" + mapId]);
+
+$('.resizeMapButton').click(function() {
+    expandMap(window["map_" + mapId]);
+});
+
+}
+
+
 
 function setColor(value) {
     if(value > 0 && value < 0.629)
@@ -748,8 +787,8 @@ function setColor(value) {
 }
 
 
-function fadeMapIn() {
-    $('.map_container').addClass('map_containerVis')
+function fadeMapIn(mapContainer) {
+    mapContainer.addClass('map_containerVis')
 
     setTimeout(function(){ 
         map.invalidateSize(false);
@@ -757,12 +796,12 @@ function fadeMapIn() {
 
 }
 
-function fadeMapOut() {
-    $('.map_container').removeClass('map_containerVis') 
+function fadeMapOut(mapContainer) {
+    mapContainer.removeClass('map_containerVis') 
 }
 
 var flag = 0;
-function expandMap() {
+function expandMap(map) {
 
 
         var newHeight = findHeightTop(),
@@ -828,9 +867,9 @@ function findWidthLeft() {
 
 }
 
-function findOffsetTop() {
+function findOffsetTop(mapContainer) {
 
-    var thisMap = $('.map_container');
+    var thisMap = mapContainer;
 
     var heightOfTopElements = $("#header").height() + $("#headerSlideContent").height();
 
@@ -846,9 +885,7 @@ function findOffsetTop() {
 
 }
 
-$('.resizeMapButton').click(function() {
-    expandMap();
-})
+
 
 
 // ############################

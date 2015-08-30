@@ -94,7 +94,7 @@ transition: width 500ms ease-out, opacity 500ms cubic-bezier(0.295, 0.785, 0.285
     width:23%;
     opacity: 1;
 }
-#map {
+.map {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -350,7 +350,7 @@ transition: width 500ms ease-out, opacity 500ms cubic-bezier(0.295, 0.785, 0.285
 .flagBar {
     position: relative;
 }
-.flagBarFlag {
+.flagBarFlag1, .flagBarFlag2 {
     height: 2em;
     width: 3em;
     margin: 0 auto;
@@ -359,11 +359,11 @@ transition: width 500ms ease-out, opacity 500ms cubic-bezier(0.295, 0.785, 0.285
     -o-background-size: cover;
     background-size: cover;
 }
-.flagBarFlag img {
+.flagBarFlag1 img, .flagBarFlag2 img {
     height: 2em;
     width: 3em;
 }
-.flagBarFlag:before {
+.flagBarFlag1:before, .flagBarFlag2:before {
     background: #cdcdcd none repeat scroll 0 0;
     content: "";
     height: 1px;
@@ -374,7 +374,7 @@ transition: width 500ms ease-out, opacity 500ms cubic-bezier(0.295, 0.785, 0.285
     width: 35%;
     left: 0;
 }
-.flagBarFlag:after {
+.flagBarFlag1:after, .flagBarFlag2:after {
     background: #cdcdcd none repeat scroll 0 0;
     content: "";
     height: 1px;
@@ -400,13 +400,13 @@ transition: width 500ms ease-out, opacity 500ms cubic-bezier(0.295, 0.785, 0.285
     text-align: right;
     margin:0 3% 0 0;
 }
-.rankScore {
+.rankScoreFirstCountry, .rankScoreSecondCountry {
     font-size: 2.3em;
     font-style: normal !important;
     margin-right: 5%;
     font-family: "oswald";
 }
-.totalScore {
+.totalScoreFirstCountry, .totalScoreSecondCountry {
     font-size: 2.3em;
     font-style: normal !important;
     font-family: "oswald";
@@ -423,15 +423,15 @@ transition: width 500ms ease-out, opacity 500ms cubic-bezier(0.295, 0.785, 0.285
     border-spacing: 0px;
     border-collapse: separate;
 }
-.countryLadder {
+.tabFirstCountryLadder, .tabSecondCountryLadder {
     height: 100%;
 }
 
-.countryLadder tr {
+.tabFirstCountryLadder tr, .tabSecondCountryLadder tr {
     color: white;
     text-align: left;
 }
-.countryLadder td {
+.tabFirstCountryLadder td, .tabSecondCountryLadder td {
     border-top: 1px solid #ccc;
     padding: 0.3em 0.7em 0.3em 0.7em;
 }
