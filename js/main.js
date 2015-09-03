@@ -157,15 +157,20 @@ function statisticsTabMouseOut(svgTab2) {
 // ####################################
 // ##  Create Tabs for the textbox   ##
 // ####################################
+
 var textTabMouseOverFlag = 0;
-function enableTabs(tabContainer, tab1 ,tab2, etab1, etab2, svgTab1, svgTab2) {
+function enableTabs(section,tabContainer) {
+
+var tabContainer = section.find(".tab-container"),
+    tab1 = tabContainer.find(".tabs1"),
+    tab2 = tabContainer.find(".tabs2"),
+    etab1 = tabContainer.find("a:first").attr("href"),
+    etab2 = tabContainer.find("a:last").attr("href"),
+    svgTab1 = section.find("svg:first"),
+    svgTab2 = section.find("svg:last");
 
 tabContainer.easytabs();
 
-// if(textTabMouseOverFlag === 0) {    // Select it only once on start
-//     textTabMouseOver(svgTab1); // Start with tab1 selected
-//     textTabMouseOverFlag = 1;
-// }
 
 isStatsticTabSelected = true;
 isTextTabSelected = false;
@@ -196,46 +201,6 @@ tab2.click(function(){
 }
 
 
-$("section").each(function() {
-
-var section = $(this);
-
-  var tabContainer = section.find(".tab-container"),
-      tab1 = tabContainer.find(".tabs1"),
-      tab2 = tabContainer.find(".tabs2"),
-      etab1 = tabContainer.find("a:first").attr("href"),
-      etab2 = tabContainer.find("a:last").attr("href"),
-      svgTab1 = section.find("svg:first"),
-      svgTab2 = section.find("svg:last");
-
- // console.log(tabContainer + " " + tab1 + " " + tab2 + " " + etab1 + " " + etab2 + " " + svgTab1 + " " + svgTab2); 
-
-  enableTabs(tabContainer, tab1, tab2, etab1, etab2, svgTab1, svgTab2);
-// 1 and 2 stands for first and second country
-
-var mapId = section.find(".map").attr("id"),
-    countryName1 = section.find(".tabFirstCountryName"),
-    countryName2 = section.find(".tabSecondCountryName"),
-    score1 = section.find(".cciScoreFirstCountry"),
-    score2 = section.find(".cciScoreSecondCountry"),
-    rank1 = section.find(".rankScoreFirstCountry"),
-    rank2 = section.find(".rankScoreSecondCountry"),
-    totalScore1 = section.find(".totalScoreFirstCountry"),
-    totalScore2 = section.find(".totalScoreSecondCountry"),
-    countryLadder1 = section.find(".tabFirstCountryLadder"),
-    countryLadder2 = section.find(".tabSecondCountryLadder"),
-    flagBar1 = section.find(".flagBarFlag1"),
-    flagBar2 = section.find(".flagBarFlag2"),
-    countryLadderContainer1 = section.find("[secClass='countryLadderContainerFirst']"),
-    countryLadderContainer2 = section.find("[secClass='countryLadderContainerSecond']");
-
-if(mapId) {
-    createMap(mapId,countryName1,countryName2,score1,score2,rank1,rank2,totalScore1,totalScore2,countryLadder1,countryLadder2,flagBar1,flagBar2,countryLadderContainer1,countryLadderContainer2,tab1,tab2);
-}
-
-});
-
-
 
 
 // #############################
@@ -257,10 +222,28 @@ if(mapId) {
 
 
 
-// #######################################
-// ##  FadeIn the content of each slide ##
-// #######################################
+// ########################################
+// ##  Create the content for each slide ##
+// ########################################
 
+// Create map and tabs for every slide 
+
+$("section").each(function() {
+
+var section = $(this);
+
+  enableTabs(section); // Creates the tabs in the content text box
+
+var mapId = section.find(".map").attr("id");
+
+if(mapId) {
+    createMap(section); // Creates the map for each slide
+}
+
+});
+
+
+// Create the content for each slide
 
 var scrollTrigger = true;
 
@@ -268,55 +251,22 @@ $(window).on("scrollstop", {latency: 0}, function() {
 
 $("section").each(function() {
 
-var slide = $(this);
+var slide = $(this),
+    trigger = slide.find('.trigger'), // Trigger to show up the content
+    chapter = $('.slideHeader').find('.chapters').children()[0],
+    slideNumber = slide.attr('id').substr(slide.attr('id').length - 1); 
 
-        if(slide.isOnScreen(0.3,0.3)) { 
-            console.log(slide)
+        if(slide.isOnScreen(0.3,0.3)) {
+            $(".chapter").removeClass("chapterSelected");
+            $("#chapter" + slideNumber).addClass("chapterSelected");
+            addSlideContent(slide, trigger); // Fades in each slide content 
+            doAutoScroll(trigger); // Automatic scroll the the next slide 
         } 
-
-
 });
-        // // SLIDE 2
-        // var slide2 = $("#slide-2");
-        // var trigger = $("#triggerSlide2");
-        // if(slide2.isOnScreen(0.3,0.3)) { 
-        //     $(".chapter").removeClass("chapterSelected");
-        //     $("#chapter2").addClass("chapterSelected");
-        //     addSlideContent(slide2, trigger); 
-        //     doAutoScroll(trigger);
-        // } 
+});
 
 
-        // // SLIDE 3
-        // var slide3 = $("#slide-3");
-        // var trigger = $("#triggerSlide3");
-        // if(slide3.isOnScreen(0.3,0.3)) { 
-        //     $(".chapter").removeClass("chapterSelected");
-        //     $("#chapter3").addClass("chapterSelected");
-        //     addSlideContent(slide3, trigger); 
-        //     doAutoScroll(trigger); 
-        // }
-
-
-        // // SLIDE 4
-        // var slide4 = $("#slide-4");
-        // var trigger = $("#triggerSlide4");
-        // if(slide4.isOnScreen(0.3,0.3)) { 
-        //     $(".chapter").removeClass("chapterSelected");
-        //     $("#chapter4").addClass("chapterSelected");
-        //     addSlideContent(slide4, trigger); // Only excute this function if the slide is on screen,
-        // }                                     // else each funtion will be triggered and impair performance
-
-        //  // SLIDE 5
-        // var slide5 = $("#slide-5");
-        // var trigger = $("#triggerSlide5");
-        // if(slide5.isOnScreen(0.3,0.3)) {        
-        //     $(".chapter").removeClass("chapterSelected");
-        //     $("#chapter5").addClass("chapterSelected");
-        //     addSlideContent(slide5, trigger);
-        // }
-
-  });
+// Create the autoscroll for each slide
 
 var doAutoScrollTriggerFlag = 0;
 
@@ -335,28 +285,29 @@ function doAutoScroll (trigger) {
     }
 }
 
-// Adds content and animation to each slide
+// Fades in each slide content 
+
 var bottomOffsetFlag = true;
 var selectTabFlag2 = false;
 var isSlideOnScreen = false,
     isSlideNotOnScreen = false;
 
-function addSlideContent(this_, trigger) {
+function addSlideContent(section, trigger) {
 
-        var nextSlide = this_.next(),
-            curtainContentContainer = this_.children().children(),
+        var nextSlide = section.next(),
+            curtainContentContainer = section.children().children(),
             curtainContentBackground = curtainContentContainer.children().first(),
             curtainContent = curtainContentBackground.next(),
             mapContainer = curtainContent.next();
 
-        var sectionId = $(this_).attr('id'),
-            tabContainerId = $("#" + sectionId).find(".tab-container").attr("id"),
-            tab1Id = $("#" + tabContainerId).find(".tabs1").attr("id"),
-            tab2Id = $("#" + tabContainerId).find(".tabs2").attr("id"),
-            etab1 = $("#" + tabContainerId).find("a:first").attr("href"),
-            svgTab1 = $("#" + sectionId).find("svg:first").attr("id"),
-            svgTab2 = $("#" + sectionId).find("svg:last").attr("id");
+            tabContainerId = section.find(".tab-container").attr("id"),
+            tab1 = section.find(".tabs1"),
+            tab2 = section.find(".tabs2"),
+            etab1 = section.find("a:first").attr("href"),
+            svgTab1 = section.find("svg:first").attr("id"),
+            svgTab2 = section.find("svg:last").attr("id");
 
+            var mapId = section.find(".map").attr("id");
 
         // If the trigger is 80% visible on screen fadeIn the content
         if(trigger.isOnScreen(0.8,0.8) && (!nextSlide.isOnScreen(0,0))) {
@@ -381,17 +332,19 @@ function addSlideContent(this_, trigger) {
                         
                         var bottom = findOffsetTop(mapContainer)
 
-                            mapContainer.css({bottom:bottom})
+                        mapContainer.css({bottom:bottom})
                         bottomOffsetFlag = false;
                     } 
                 }, 300);
 
 
-                $("#" + tab1Id).trigger("click"); 
+                tab1.trigger("click"); 
 
                 selectTabFlag2 = false; 
                 isSlideNotOnScreen = false;
-                fadeMapIn(mapContainer); 
+
+                if(mapId)
+                    fadeMapIn(window["map_" + mapId],mapContainer); 
             }                        
 
         }
@@ -406,7 +359,7 @@ function addSlideContent(this_, trigger) {
                 if(selectTabFlag2 === false) { 
                     selectTabFlag2 = true; 
                     setTimeout(function(){ 
-                        $("#" + tab1Id).trigger("click"); 
+                        tab1.trigger("click"); 
                     }, 500); 
                 }
 
@@ -420,8 +373,13 @@ function addSlideContent(this_, trigger) {
                 curtainContentBackground.removeClass("curtainContentBackgroundVis");
                 curtainContent.removeClass("curtainContentVis");
 
+                if(mapId) {
+                    fadeMapOut(mapContainer);
 
-                fadeMapOut(mapContainer);
+                    if(expandMapFlag==1) {
+                        expandMap(window["map_" + mapId]);
+                    }
+                }
 
                 $("#headerSlideContainer").removeClass("slideHeaderVis");
             }
@@ -553,7 +511,34 @@ $(".countryLadderContainer").mCustomScrollbar("disable");
 
 
 
-function createMap(mapId,countryName1,countryName2,score1,score2,rank1,rank2,totalScore1,totalScore2,countryLadder1,countryLadder2,flagBar1,flagBar2,countryLadderContainer1,countryLadderContainer2,tab1,tab2) {
+function createMap(section) {
+
+// 1 and 2 stands for first and second country
+
+var mapId = section.find(".map").attr("id"),
+    countryName1 = section.find(".tabFirstCountryName"),
+    countryName2 = section.find(".tabSecondCountryName"),
+    score1 = section.find(".cciScoreFirstCountry"),
+    score2 = section.find(".cciScoreSecondCountry"),
+    rank1 = section.find(".rankScoreFirstCountry"),
+    rank2 = section.find(".rankScoreSecondCountry"),
+    totalScore1 = section.find(".totalScoreFirstCountry"),
+    totalScore2 = section.find(".totalScoreSecondCountry"),
+    countryLadder1 = section.find(".tabFirstCountryLadder"),
+    countryLadder2 = section.find(".tabSecondCountryLadder"),
+    flagBar1 = section.find(".flagBarFlag1"),
+    flagBar2 = section.find(".flagBarFlag2"),
+    countryLadderContainer1 = section.find("[secClass='countryLadderContainerFirst']"),
+    countryLadderContainer2 = section.find("[secClass='countryLadderContainerSecond']"),
+    resizeMapButton = section.find(".resizeMapButton"),
+    searchBar = section.find(".mapSearchBarButton");
+
+var tabContainer = section.find(".tab-container"),
+    tab1 = tabContainer.find(".tabs1"),
+    tab2 = tabContainer.find(".tabs2");
+
+var dataset = parseJSON("json/co2_emissions_new.json");
+
 
 // The mapId is the root to its tiles
 
@@ -596,7 +581,7 @@ window["utfGrid_" + mapId].on('mouseover', function(e) {
         isoCode = e.data.ISO3; 
 
 
-    $('#mapTooltipContent').html('<img src="images/flags/' + isoCode + '.png" height="15" width="20">' 
+    $('#mapTooltipContent').html('<img src="images/flags/' + isoCode + '.png" height="15">' 
                              +  '<h1>' + e.data.NAME + '</h1>'
                              +  '<span>' + 'CO2 Emissions: ' + '<em style="color:' + color +' ;">' + value + '</em>' + '</span>'  
     )
@@ -626,7 +611,6 @@ window["utfGrid_" + mapId].on('click', function (e) {
 
         var value = e.data[2011],
             color = setColor(value),
-            dataset = parseJSON("json/co2_emissions.json"),
             iso3_code = e.data.ISO3,
             rank = getRank(dataset,iso3_code),
             countryNumber = countCountries(dataset);
@@ -649,11 +633,11 @@ window["utfGrid_" + mapId].on('click', function (e) {
 
 
         for(i in sortedDataset) {
-            if(sortedDataset[i][2011] !== null) {
+            if(sortedDataset[i][2011] !== 0) {
 
-                var iso3_code_for_ladder = sortedDataset[i].country_code; 
+                var iso3_code_for_ladder = sortedDataset[i].ISO3; 
 
-                if(sortedDataset[i].country_code === iso3_code) {
+                if(sortedDataset[i].ISO3 === iso3_code) {
                     highlight = "grey";
                     idToScroll = "countryToScroll_" + mapId;
                     scrollTo = "#" + idToScroll;
@@ -666,7 +650,7 @@ window["utfGrid_" + mapId].on('click', function (e) {
                 ladder += "<tr id='" + idToScroll + "' style='background-color:" + highlight + "'>" + 
                                    "<td>" + "<img height='14' width='22' src='images/flags/" + iso3_code_for_ladder + ".png'>" + "</td>" + 
                                    "<td>" + sortedDataset[i][2011].toFixed(3) + "</td>" +
-                                   "<td>" + sortedDataset[i].country_name + "</td>" +
+                                   "<td>" + sortedDataset[i].NAME + "</td>" +
                                    "<td>" + rank + "</tr>"; 
                 rank++;
             }
@@ -694,7 +678,6 @@ window["utfGrid_" + mapId].on('contextmenu', function (e) {
     if (e.data) {
         var value = e.data[2011],
             color = setColor(value),
-            dataset = parseJSON("json/co2_emissions.json"),
             iso3_code = e.data.ISO3,
             rank = getRank(dataset,iso3_code),
             countryNumber = countCountries(dataset);
@@ -719,11 +702,12 @@ window["utfGrid_" + mapId].on('contextmenu', function (e) {
 
 
         for(i in sortedDataset) {
-            if(sortedDataset[i][2011] !== null) {
+            if(sortedDataset[i][2011] !== 0) {
 
-            var iso3_code_for_ladder = sortedDataset[i].country_code; 
 
-                if(sortedDataset[i].country_code === iso3_code) {
+            var iso3_code_for_ladder = sortedDataset[i].ISO3; 
+
+                if(sortedDataset[i].ISO3 === iso3_code) {
                     highlight = "grey";
                     idToScroll = "countryToScroll2_" + mapId;
                     scrollTo = "#" + idToScroll;
@@ -736,7 +720,7 @@ window["utfGrid_" + mapId].on('contextmenu', function (e) {
                 ladder += "<tr id='" + idToScroll + "' style='background-color:" + highlight + "'>" + 
                                    "<td>" + "<img height='14' width='22' src='images/flags/" + iso3_code_for_ladder + ".png'>" + "</td>" + 
                                    "<td>" + sortedDataset[i][2011].toFixed(3) + "</td>" +
-                                   "<td>" + sortedDataset[i].country_name + "</td>" +
+                                   "<td>" + sortedDataset[i].NAME + "</td>" +
                                    "<td>" + rank + "</tr>"; 
                 rank++;
             }
@@ -757,9 +741,61 @@ window["utfGrid_" + mapId].on('contextmenu', function (e) {
 
 window["map_" + mapId].addLayer(window["utfGrid_" + mapId]);
 
-$('.resizeMapButton').click(function() {
+
+// Expand map button
+
+resizeMapButton.click(function() {
     expandMap(window["map_" + mapId]);
 });
+
+
+// Search bar
+
+var marker;
+searchBar.click(function(){
+
+var myIcon = L.icon({
+    iconUrl: 'images/map_marker.png',
+    iconSize: [20, 30],
+    iconAnchor: [10, 30],
+});
+
+var value = $('.mapSearchBar ' + "input").val();
+
+for(i in dataset) {
+    if(dataset[i].NAME == value) {
+        var lat = dataset[i].LAT, 
+            lng = dataset[i].LON;
+    }
+}
+    if(window["map_" + mapId].hasLayer(marker))
+        window["map_" + mapId].removeLayer(marker)
+
+    marker = new L.marker([lat, lng], {icon: myIcon}); 
+
+
+    window["map_" + mapId].addLayer(marker)
+                          .setView([lat, lng]);
+
+});
+
+var searchBarFlag = 0;
+
+$('.mapSearchBar ' + "input").focus(function(){
+    if(searchBarFlag == 0) {
+        $('.mapSearchBar ' + "input").val("");
+        $('.mapSearchBar').addClass('mapSearchBarFocus');
+        searchBarFlag = 1;
+    }
+})
+
+$(window).click(function(){
+    if(!$('.mapSearchBar ' + "input").is(":focus") && searchBarFlag == 1) {
+        $('.mapSearchBar').removeClass('mapSearchBarFocus');
+        $('.mapSearchBar ' + "input").val("Search country..");
+        searchBarFlag = 0;
+    }
+})
 
 }
 
@@ -787,7 +823,7 @@ function setColor(value) {
 }
 
 
-function fadeMapIn(mapContainer) {
+function fadeMapIn(map,mapContainer) {
     mapContainer.addClass('map_containerVis')
 
     setTimeout(function(){ 
@@ -800,21 +836,22 @@ function fadeMapOut(mapContainer) {
     mapContainer.removeClass('map_containerVis') 
 }
 
-var flag = 0;
+var expandMapFlag = 0;
 function expandMap(map) {
 
+var latlng = L.latLng(35, 15);
 
         var newHeight = findHeightTop(),
             newWidth = findWidthLeft() + $('.map_container').width();
 
-        if(flag==0) {
+        if(expandMapFlag==0) {
 
             $('.map_container').height(newHeight)
             $('.map_container').width(newWidth);
             $('.resizeMapButton').addClass('resizeMapButtonZoomout');
-            map.setZoom(2);
+            map.setView(latlng,2);
 
-        flag=1;
+        expandMapFlag=1;
 
         setTimeout(function(){ 
             map.invalidateSize(false);  
@@ -823,14 +860,14 @@ function expandMap(map) {
         return;
         }
 
-        if(flag==1) {
+        if(expandMapFlag==1) {
 
             $('.map_container').css({height:""})
             $('.map_container').css({width:""})
             $('.resizeMapButton').removeClass('resizeMapButtonZoomout');
-            map.setZoom(1);
+            map.setView(latlng,1)
 
-        flag=0;
+        expandMapFlag=0;
 
         setTimeout(function(){ 
             map.invalidateSize(false);  
@@ -928,14 +965,15 @@ function getRank(dataset, iso3_code) {
 
             var i = 1;
             for (elem in sortedDataset) {
-                    if (sortedDataset[elem].country_code == keyToFind) {
+
+                    if (sortedDataset[elem].ISO3 == keyToFind) {
                         return i;
                     }
-                    if(sortedDataset[elem][2011] !== null) { // Dont count noData elements(countries)
+                    if(sortedDataset[elem][2011] !== 0) { // Dont count noData elements(countries)
                         i++;
                     }
             }
-            return null;
+            return i;
         }
 
 }
@@ -946,11 +984,13 @@ function countCountries(dataset) {
 
         var i = 1;
         for (elem in dataset) {
-                if(dataset[elem][2011] !== null) { // Dont count noData elements(countries)
+                if(dataset[elem][2011] !== 0) { // Dont count noData elements(countries)
                     i++;
                 }
         }
         return i;
     }
 
+
 });
+
