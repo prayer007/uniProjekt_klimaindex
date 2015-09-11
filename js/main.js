@@ -158,7 +158,7 @@ function statisticsTabMouseOut(svgTab2) {
 // ##  Create Tabs for the textbox   ##
 // ####################################
 
-var textTabMouseOverFlag = 0;
+
 function enableTabs(section,tabContainer) {
 
 var tabContainer = section.find(".tab-container"),
@@ -172,31 +172,30 @@ var tabContainer = section.find(".tab-container"),
 tabContainer.easytabs();
 
 
-isStatsticTabSelected = true;
-isTextTabSelected = false;
+isStatsticTabSelected = tab1.attr("value");
+isTextTabSelected = tab2.attr("value");
 var isStart = true;
 
 tab1.click(function(){
     tabContainer.easytabs('select', etab1);
-    isTextTabSelected = true;
-    if(isStatsticTabSelected) {
+    tab2.attr("value","1");
+    if(tab1.attr("value") == 1) {
         textTabMouseOver(svgTab1);
     }
-    if(isStatsticTabSelected && !isStart) {
+    if(tab1.attr("value") == 1 && !isStart) {
         statisticsTabMouseOut(svgTab2);
     }
-    isStatsticTabSelected = false;
+    tab1.attr("value","0");
     isStart = false;
-
 });
 
 tab2.click(function(){
     tabContainer.easytabs('select', etab2);
-    isStatsticTabSelected = true;
-    if(isTextTabSelected)
+    tab1.attr("value","1")
+    if(tab2.attr("value") == 1)
         statisticsTabMouseOver(svgTab2);
     textTabMouseOut(svgTab1);
-    isTextTabSelected = false;
+    tab2.attr("value","0");
 });
 }
 
@@ -380,6 +379,11 @@ function addSlideContent(section, trigger) {
                         expandMap(window["map_" + mapId]);
                     }
                 }
+                // console.log(window["map_" + mapId])
+                // if(window["map_" + mapId].hasLayer(marker))
+                //     window["map_" + mapId].removeLayer(marker)
+
+
 
                 $("#headerSlideContainer").removeClass("slideHeaderVis");
             }
@@ -483,7 +487,7 @@ $(".chapter").click(function() {
 
 $(".curtainContentTabInner").mCustomScrollbar({ 
     axis:"y",
-    scrollbarPosition: "outside",
+    scrollbarPosition: "inside",
     mouseWheel:{ 
         preventDefault: false 
     },
@@ -531,7 +535,10 @@ var mapId = section.find(".map").attr("id"),
     countryLadderContainer1 = section.find("[secClass='countryLadderContainerFirst']"),
     countryLadderContainer2 = section.find("[secClass='countryLadderContainerSecond']"),
     resizeMapButton = section.find(".resizeMapButton"),
-    searchBar = section.find(".mapSearchBarButton");
+    searchBarButton = section.find(".mapSearchBarButton"),
+    searchBar = section.find(".mapSearchBar"),
+    statisticsTab = section.find(".tabCountries");
+
 
 var tabContainer = section.find(".tab-container"),
     tab1 = tabContainer.find(".tabs1"),
@@ -568,7 +575,6 @@ $("#" + mapId).mousemove(function(e) {
         y = e.clientY;
     tooltip.style.top = (y - 120) + 'px';
     tooltip.style.left = (x - 196) + 'px';
-
 });
 
 
@@ -600,12 +606,17 @@ $("#" + mapId).on('mouseout', function(e) {
 
 
 // Click
-
 window["utfGrid_" + mapId].on('click', function (e) {
-
 
     tab2.trigger("click");
 
+var time;               // If the country statistics opens the first time set a timeout function to prevent query issues
+if(statisticsTab.is(":hidden"))
+    time = 600;
+else
+    time = 0;
+
+setTimeout(function() {
 
     if (e.data) {
 
@@ -657,16 +668,21 @@ window["utfGrid_" + mapId].on('click', function (e) {
               
         }
 
-         countryLadder1.html(ladder);
-         flagBar1.html('<img src="images/flags/' + iso3_code + '.png">'); 
+        countryLadder1.html(ladder);
+        flagBar1.html('<img src="images/flags/' + iso3_code + '.png">'); 
 
 
         setTimeout(function() {
-         countryLadderContainer1.mCustomScrollbar("scrollTo", scrollTo);           
-     }, 200)
+            countryLadderContainer1.mCustomScrollbar("scrollTo", scrollTo);           
+        }, time)
 
 
-        }
+    }
+
+    } ,time)
+
+mapClickFlag = 1;
+
 });
 
 // Rightclick
@@ -674,6 +690,15 @@ window["utfGrid_" + mapId].on('click', function (e) {
 window["utfGrid_" + mapId].on('contextmenu', function (e) {
 
     tab2.trigger("click");
+
+var time;               // If the country statistics opens the first time set a timeout function to prevent query issues
+if(statisticsTab.is(":hidden"))
+    time = 600;
+else
+    time = 0;
+
+
+setTimeout(function() {
 
     if (e.data) {
         var value = e.data[2011],
@@ -732,10 +757,13 @@ window["utfGrid_" + mapId].on('contextmenu', function (e) {
 
 
         setTimeout(function() {
-          countryLadderContainer2.mCustomScrollbar("scrollTo", scrollTo);           
-     }, 200)
+            countryLadderContainer2.mCustomScrollbar("scrollTo", scrollTo);           
+        }, time);
 
     }
+
+} ,time)
+
 
 });
 
@@ -752,7 +780,12 @@ resizeMapButton.click(function() {
 // Search bar
 
 var marker;
-searchBar.click(function(){
+var searchBarInput = section.find($('.mapSearchBar ' + "input")); 
+var popupFlag;
+
+searchBarButton.click(function(){
+
+popupFlag = 0;
 
 var myIcon = L.icon({
     iconUrl: 'images/map_marker.png',
@@ -760,16 +793,31 @@ var myIcon = L.icon({
     iconAnchor: [10, 30],
 });
 
-var value = $('.mapSearchBar ' + "input").val();
-
+var value = searchBarInput.val();
+var foundFlag = 0;
 for(i in dataset) {
     if(dataset[i].NAME == value) {
         var lat = dataset[i].LAT, 
-            lng = dataset[i].LON;
+            lng = dataset[i].LON,
+            name = dataset[i].NAME;
+            foundFlag = 1;
     }
 }
+
+if(foundFlag) {
+
     if(window["map_" + mapId].hasLayer(marker))
         window["map_" + mapId].removeLayer(marker)
+
+    window["map_" + mapId].on('popupclose', function(e) {
+        if(popupFlag == 1)
+            window["map_" + mapId].removeLayer(marker)
+    });
+
+    var popup = L.popup({offset:L.point(0, -25)})
+        .setLatLng([lat, lng])
+        .setContent('<h1>' + name + '</h1>')
+        .openOn(window["map_" + mapId]);
 
     marker = new L.marker([lat, lng], {icon: myIcon}); 
 
@@ -777,28 +825,64 @@ for(i in dataset) {
     window["map_" + mapId].addLayer(marker)
                           .setView([lat, lng]);
 
+popupFlag = 1;
+}
 });
+
+
 
 var searchBarFlag = 0;
 
-$('.mapSearchBar ' + "input").focus(function(){
+searchBarInput.focus(function(){
     if(searchBarFlag == 0) {
-        $('.mapSearchBar ' + "input").val("");
-        $('.mapSearchBar').addClass('mapSearchBarFocus');
+        searchBarInput.val("");
+        searchBar.addClass('mapSearchBarFocus');
         searchBarFlag = 1;
     }
-})
+});
 
 $(window).click(function(){
-    if(!$('.mapSearchBar ' + "input").is(":focus") && searchBarFlag == 1) {
-        $('.mapSearchBar').removeClass('mapSearchBarFocus');
-        $('.mapSearchBar ' + "input").val("Search country..");
+    if(!searchBarInput.is(":focus") && searchBarFlag == 1) {
+        searchBar.removeClass('mapSearchBarFocus');
+        searchBarInput.val("Search country..");
         searchBarFlag = 0;
     }
-})
+});
 
+searchBarInput.autocomplete({
+    source: tagsForAutocomplete(),
+    open:function(e,ui){
+        /* create the scrollbar each time autocomplete menu opens/updates */
+        $("#ui-id-1").mCustomScrollbar();
+    },
+    response:function(e,ui){
+        /* destroy the scrollbar after each search completes, before the menu is shown */
+        $("#ui-id-1").mCustomScrollbar("destroy");
+    },
+    close:function(e,ui){
+        /* destroy the scrollbar each time autocomplete menu closes */
+        $("#ui-id-1").mCustomScrollbar("destroy");
+    }
+});
+
+};
+
+
+// Create autocomplete for map searchbar
+
+
+function tagsForAutocomplete() {
+
+tagsForAutocompleteArr = [];
+
+    var dataset = parseJSON("json/co2_emissions_new.json");
+
+        for(i in dataset) {
+            tagsForAutocompleteArr.push(dataset[i].NAME);
+        }
+
+        return tagsForAutocompleteArr;
 }
-
 
 
 function setColor(value) {

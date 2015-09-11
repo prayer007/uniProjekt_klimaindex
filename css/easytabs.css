@@ -54,14 +54,14 @@ left:-1000000000px;
 
 .tabs1 {
 	float: left;
-	height: 7%;
-	width: 10%;
+	height: 6%;
+	width: 9%;
 	cursor: pointer;
 	margin:0 8% 0 0;
 }
 .tabs2 {
-	height: 7%;
-	width: 10%;
+	height: 6%;
+	width: 9%;
 	cursor: pointer;
 	margin:0 8% 0 0;
 	overflow: hidden;

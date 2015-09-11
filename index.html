@@ -13,6 +13,7 @@
 <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300' rel='stylesheet' type='text/css'>
 
 <script src="js/jquery-1.11.3.min_velocity.js" type="text/javascript"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="js/less.js" type="text/javascript"></script>
 <script src="js/jquery.tooltipster.min.js"></script>
 <script src="js/skrollr.js"></script>
@@ -105,7 +106,7 @@ $('#preload').remove(); // Remove the div after de images are cached
        		<h1>CO2 Emission (metric tons per capita)</h2>
 			<div id="tab-container" class="tab-container">
 				<div class="tabs-container">
-					<div class="tabs1">
+					<div class="tabs1" value="1">
 					<?xml version="1.0" encoding="utf-8"?>
 					<svg version="1.1" fill="#6688AA" id="tab1_SVG_slide2" class="tab1_SVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 					viewBox="14 7 72 66" enable-background="new 14 7 72 66" xml:space="preserve">
@@ -118,7 +119,7 @@ $('#preload').remove(); // Remove the div after de images are cached
 					</svg>
 
 					</div>
-					<div class="tabs2">
+					<div class="tabs2" value="0">
 					<?xml version="1.0" encoding="utf-8"?>
 					<svg version="1.1" id="tab2_SVG_slide2" class="tab2_SVG" fill="#6688AA" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 					viewBox="12.4 0 75.2 71.2" enable-background="new 12.4 0 75.2 71.2" xml:space="preserve">
@@ -146,7 +147,7 @@ $('#preload').remove(); // Remove the div after de images are cached
 				<div id="tabFirstCountry" class="tabCountries">
 					<div class="flagBar">
 						<div class="flagBarFlag1">
-							<img height="14" width="22" src="images/flags/yyy.png">
+							<img height="14" width="22" src="images/flags/YYY.png">
 						</div>
 					</div>
 					<h1 class="tabFirstCountryName">Click to show<br> Country</h1>
@@ -164,7 +165,7 @@ $('#preload').remove(); // Remove the div after de images are cached
 				<div id="tabSecondCountry" class="tabCountries">
 					<div class="flagBar">
 						<div class="flagBarFlag2">
-							<img height="14" width="22" src="images/flags/yyy.png">
+							<img height="14" width="22" src="images/flags/YYY.png">
 						</div>
 					</div>
 					<h1 class="tabSecondCountryName">Rightclick to show Country</h1>
@@ -192,9 +193,9 @@ $('#preload').remove(); // Remove the div after de images are cached
 				<div class="resizeMapButton"></div>
 				<div class="mapSearchBarContainer">
 					<div class="mapSearchBar">
-						<form>
+						<div class="ui-widget">
 							<input type="text" value="Search country..">
-						</form>
+						</div>
 					</div>
 					<div class="mapSearchBarButton">
 						<div class="mapSearchBarButtonImgContainer">
@@ -242,7 +243,7 @@ $('#preload').remove(); // Remove the div after de images are cached
        		<h1>CO2 Emission (metric tons per capita)</h2>
 			<div id="tab-container" class="tab-container">
 				<div class="tabs-container">
-					<div class="tabs1">
+					<div class="tabs1" value="1">
 					<?xml version="1.0" encoding="utf-8"?>
 					<svg version="1.1" fill="#6688AA" id="tab1_SVG_slide3" class="tab1_SVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 					viewBox="14 7 72 66" enable-background="new 14 7 72 66" xml:space="preserve">
@@ -255,7 +256,7 @@ $('#preload').remove(); // Remove the div after de images are cached
 					</svg>
 
 					</div>
-					<div class="tabs2">
+					<div class="tabs2" value="0">
 					<?xml version="1.0" encoding="utf-8"?>
 					<svg version="1.1" id="tab2_SVG_slide3" class="tab2_SVG" fill="#6688AA" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 					viewBox="12.4 0 75.2 71.2" enable-background="new 12.4 0 75.2 71.2" xml:space="preserve">
@@ -285,7 +286,7 @@ $('#preload').remove(); // Remove the div after de images are cached
 				<div id="tabFirstCountry" class="tabCountries">
 					<div class="flagBar">
 						<div class="flagBarFlag1">
-							<img height="14" width="22" src="images/flags/yyy.png">
+							<img height="14" width="22" src="images/flags/YYY.png">
 						</div>
 					</div>
 					<h1 class="tabFirstCountryName">Click to show<br> Country</h1>
@@ -303,7 +304,7 @@ $('#preload').remove(); // Remove the div after de images are cached
 				<div id="tabSecondCountry" class="tabCountries">
 					<div class="flagBar">
 						<div class="flagBarFlag2">
-							<img height="14" width="22" src="images/flags/yyy.png">
+							<img height="14" width="22" src="images/flags/YYY.png">
 						</div>
 					</div>
 					<h1 class="tabSecondCountryName">Rightclick to show Country</h1>
@@ -329,6 +330,19 @@ $('#preload').remove(); // Remove the div after de images are cached
 				<div id="ind2" class="map">
 				</div>
 				<div class="resizeMapButton"></div>
+				<div class="mapSearchBarContainer">
+					<div class="mapSearchBar">
+						<div class="ui-widget">
+							<input type="text" value="Search country..">
+						</div>
+					</div>
+					<div class="mapSearchBarButton">
+						<div class="mapSearchBarButtonImgContainer">
+							<div class="mapSearchBarButtonImg">
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="mapSearchBar"></div>
 			</div>
 
