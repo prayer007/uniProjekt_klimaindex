@@ -383,11 +383,6 @@ function addSlideContent(section, trigger) {
                         expandMap(window["map_" + mapId]);
                     }
                 }
-                // console.log(window["map_" + mapId])
-                // if(window["map_" + mapId].hasLayer(marker))
-                //     window["map_" + mapId].removeLayer(marker)
-
-
 
                 $("#headerSlideContainer").removeClass("slideHeaderVis");
             }
@@ -568,12 +563,8 @@ var mapId = section.find(".map").attr("id"),
     rank2 = section.find(".rankScoreSecondCountry"),
     totalScore1 = section.find(".totalScoreFirstCountry"),
     totalScore2 = section.find(".totalScoreSecondCountry"),
-    countryLadder1 = section.find(".tabFirstCountryLadder"),
-    countryLadder2 = section.find(".tabSecondCountryLadder"),
     flagBar1 = section.find(".flagBarFlag1"),
     flagBar2 = section.find(".flagBarFlag2"),
-    countryLadderContainer1 = section.find("[secClass='countryLadderContainerFirst']"),
-    countryLadderContainer2 = section.find("[secClass='countryLadderContainerSecond']"),
     resizeMapButton = section.find(".resizeMapButton"),
     searchBarButton = section.find(".mapSearchBarButton"),
     searchBar = section.find(".mapSearchBar"),
@@ -668,13 +659,19 @@ function barColor(val) {
     else
         return 0;   
 };
-function fillTab1WithStats(data) {
+
+function fillTabWithStats(data,tab) {
+
         var value = data.INDEX,
         color = setColor(value),
         iso3_code = data.ISO3,
         sortParam = "REAL";
         rank = getRank(dataset,iso3_code, sortParam),
         countryNumber = countCountries(dataset);
+
+    if(tab == 0) {
+
+    var fullStats = section.find("[secClass='fullStatsFirst']");
 
         countryName1.text(data.NAME);
         score1.text(value);
@@ -684,48 +681,56 @@ function fillTab1WithStats(data) {
         totalScore1.text(countryNumber);
         flagBar1.html('<img src="images/flags/' + iso3_code + '.png">');
 
+    } else {
+
+    var fullStats = section.find("[secClass='fullStatsSecond']");
+
+        countryName2.text(data.NAME);
+        score2.text(value);
+        score2.css({color:color});
+        rank2.text(rank);
+        rank2.css({color:color});
+        totalScore2.text(countryNumber);
+        flagBar2.html('<img src="images/flags/' + iso3_code + '.png">');
+    }
+
         // Full Stats
      
-        var fullStats = section.find("[secClass='fullStatsFirst']"),
-            fullStatsBar = fullStats.find(".fullStatsBarInner") 
+            var fullStatsBar = fullStats.find(".fullStatsBarInner") 
             fullStatsValFields = fullStats.find(".val");
 
 
-        var bar1 = $(fullStatsBar[0]),
-            bar2 = $(fullStatsBar[1]),
-            bar3 = $(fullStatsBar[2]),
-            bar4 = $(fullStatsBar[3]),
-            bar5 = $(fullStatsBar[4]);
         var val1 = data.INDEX.toFixed(2),
             val2 = 0.25,
             val3 = 4.25,
             val4 = 2.8,
             val5 = 1.2;
-        var valField1 = $(fullStatsValFields[0]),
-            valField2 = $(fullStatsValFields[1]), 
-            valField3 = $(fullStatsValFields[2]), 
-            valField4 = $(fullStatsValFields[3]), 
-            valField5 = $(fullStatsValFields[4]);
 
-        bar1.css({width:relVal(val1)+"%", "backgroundColor": barColor(val1)});
-        bar2.css({width:relVal(val2)+"%", "backgroundColor": barColor(val2)});
-        bar3.css({width:relVal(val3)+"%", "backgroundColor": barColor(val3)}); 
-        bar4.css({width:relVal(val4)+"%", "backgroundColor": barColor(val4)}); 
-        bar5.css({width:relVal(val5)+"%", "backgroundColor": barColor(val5)});
+        var valArray = [val1,val2,val3,val4,val5];
 
 
-        valField1.text(val1);
-        valField2.text(val2);
-        valField3.text(val3);
-        valField4.text(val4);
-        valField5.text(val5);
+    for(var i=0; i<$(fullStatsValFields).length;i++) {
+        $(fullStatsValFields[i]).text(valArray[i]);
+        $(fullStatsBar[i]).css({width:relVal(valArray[i])+"%", "backgroundColor": barColor(valArray[i])});
+    }
 
 };
 
-// Click
-window["utfGrid_" + mapId].on('click', function (e) {
+function countryClick(e, tabParam) {
 
-    tab2.trigger("click");
+
+var tabContainer = section.find(".tab-container"),
+    tab = tabContainer.find(".tabs2");
+
+    if(tabParam == 0) {
+        countryLadder = countryLadder1 = section.find(".tabFirstCountryLadder"); 
+        countryLadderContainer = section.find("[secClass='countryLadderContainerFirst']");
+    } else {
+        countryLadder = section.find(".tabSecondCountryLadder");
+        countryLadderContainer = section.find("[secClass='countryLadderContainerSecond']");
+    }
+
+    tab.trigger("click");
 
 var time;               // If the country statistics opens the first time set a timeout function to prevent query issues
 if(statisticsTab.is(":hidden"))
@@ -740,8 +745,7 @@ setTimeout(function() {
 
         var iso3_code = e.data.ISO3;
 
-
-        fillTab1WithStats(e.data);
+        fillTabWithStats(e.data, tabParam);
 
         var sortParam = "REAL";
         var sortedDataset = getSortedDataset(dataset, sortParam);
@@ -785,18 +789,18 @@ setTimeout(function() {
             }             
         }
 
-        countryLadder1.html(ladder); 
+        countryLadder.html(ladder); 
 
 
         setTimeout(function() {
-            countryLadderContainer1.mCustomScrollbar("scrollTo", scrollTo);
+            countryLadderContainer.mCustomScrollbar("scrollTo", scrollTo);
             $(scrollTo).addClass("countryLadderHighlight");           
         }, time)
 
-        var trLadder1 = countryLadderContainer1.find("tr");
+        var trLadder = countryLadderContainer.find("tr");
 
         var thisBefore = $(scrollTo);
-        trLadder1.click(function() {
+        trLadder.click(function() {
 
             if(thisBefore)
                 thisBefore.removeClass("countryLadderHighlight");
@@ -806,7 +810,7 @@ setTimeout(function() {
                 countryName = this_.find(".tableName").text();
 
             addMarker(countryName); 
-            $(countryLadderContainer1).mCustomScrollbar("scrollTo",this_);
+            $(countryLadderContainer).mCustomScrollbar("scrollTo",this_);
             this_.addClass("countryLadderHighlight");
             thisBefore = this_;
 
@@ -817,9 +821,7 @@ setTimeout(function() {
                     data = dataset[i];
                 }
             }
-
-
-            fillTab1WithStats(data);
+            fillTabWithStats(data, tabParam);
         });
             
             arrow.addClass("tab-container-arrow_1_vis");
@@ -827,6 +829,12 @@ setTimeout(function() {
 
     } ,time)
 
+}
+
+// Click
+window["utfGrid_" + mapId].on('click', function (e) {
+
+    countryClick(e,0);
 
 });
 
@@ -834,160 +842,7 @@ setTimeout(function() {
 
 window["utfGrid_" + mapId].on('contextmenu', function (e) {
 
-    tab2.trigger("click");
-
-var time;               // If the country statistics opens the first time set a timeout function to prevent query issues
-if(statisticsTab.is(":hidden"))
-    time = 600;
-else
-    time = 0;
-
-function fillTab2WithStats(data) {
-
-        var value = data.INDEX,
-        color = setColor(value),
-        iso3_code = data.ISO3,
-        sortParam = "REAL";
-        rank = getRank(dataset,iso3_code, sortParam),
-        countryNumber = countCountries(dataset);
-
-        countryName2.text(data.NAME);
-        score2.text(value);
-        score2.css({color:color});
-        rank2.text(rank);
-        rank2.css({color:color});
-        totalScore2.text(countryNumber);
-        flagBar2.html('<img src="images/flags/' + iso3_code + '.png">');
-
-        // Full Stats
-     
-        var fullStats = section.find("[secClass='fullStatsSecond']"),
-            fullStatsBar = fullStats.find(".fullStatsBarInner") 
-            fullStatsValFields = fullStats.find(".val");
-
-
-
-        var bar1 = $(fullStatsBar[0]),
-            bar2 = $(fullStatsBar[1]),
-            bar3 = $(fullStatsBar[2]),
-            bar4 = $(fullStatsBar[3]),
-            bar5 = $(fullStatsBar[4]);
-        var val1 = data.INDEX,
-            val2 = 0.25,
-            val3 = 4.25,
-            val4 = 2.8,
-            val5 = 1.2;
-        var valField1 = $(fullStatsValFields[0]),
-            valField2 = $(fullStatsValFields[1]), 
-            valField3 = $(fullStatsValFields[2]), 
-            valField4 = $(fullStatsValFields[3]), 
-            valField5 = $(fullStatsValFields[4]);
-
-        bar1.css({width:relVal(val1)+"%", "backgroundColor": barColor(val1)});
-        bar2.css({width:relVal(val2)+"%", "backgroundColor": barColor(val2)});
-        bar3.css({width:relVal(val3)+"%", "backgroundColor": barColor(val3)}); 
-        bar4.css({width:relVal(val4)+"%", "backgroundColor": barColor(val4)}); 
-        bar5.css({width:relVal(val5)+"%", "backgroundColor": barColor(val5)});
-
-
-        valField1.text(val1);
-        valField2.text(val2);
-        valField3.text(val3);
-        valField4.text(val4);
-        valField5.text(val5);
-}
-
-setTimeout(function() {
-
-    if (e.data) {
-
-        var iso3_code = e.data.ISO3;
-
-        fillTab2WithStats(e.data);
-
-        var sortParam = "REAL";
-        var sortedDataset = getSortedDataset(dataset);
-        var ladder ="",
-            rank = 1,
-            highlight = "transparent",
-            highlightFlag = 0,
-            idToScroll = "",
-            rankToScroll = 0,
-            scrollTo = "";
-
-
-        for(i in sortedDataset) {
-            if(sortedDataset[i][sortParam] !== -999.99) {
-
-            var iso3_code_for_ladder = sortedDataset[i].ISO3; 
-
-            if(sortedDataset[i][sortParam] == 0) {
-                var toFixedValue = 1;
-            } else {
-                var toFixedValue = 3;
-            }
-
-                if(sortedDataset[i].ISO3 === iso3_code) {
-                    idToScroll = "countryToScroll2_" + mapId;
-                    scrollTo = "#" + idToScroll;
-                    rankToScroll = rank;
-                } else {
-                    idToScroll = "";
-                }
-
-                var value = sortedDataset[i][sortParam].toFixed(toFixedValue); 
-
-                ladder += "<tr id='" + idToScroll + "'>" + 
-                                   "<td>" + "<img height='14' width='22' src='images/flags/" + iso3_code_for_ladder + ".png'>" + "</td>" + 
-                                   "<td>" + Math.round(value * 1000) / 1000 + "</td>" +
-                                   "<td class='tableName'>" + sortedDataset[i].NAME + "</td>" +
-                                   "<td>" + rank + "</tr>"; 
-                rank++;
-            }             
-        }
-
-        countryLadder2.html(ladder);
-        flagBar2.html('<img src="images/flags/' + iso3_code + '.png">');  
-
-
-        setTimeout(function() {
-            countryLadderContainer2.mCustomScrollbar("scrollTo", scrollTo);
-            $(scrollTo).addClass("countryLadderHighlight");             
-        }, time);
-
-        var trLadder2 = countryLadderContainer2.find("tr");
-
-        var thisBefore = $(scrollTo);
-
-        trLadder2.click(function() {
-
-             if(thisBefore)
-                 thisBefore.removeClass("countryLadderHighlight");
-
-
-            var this_ = $(this),
-                countryName = this_.find(".tableName").text();
-
-            addMarker(countryName); 
-            $(countryLadderContainer2).mCustomScrollbar("scrollTo",this_);
-            this_.addClass("countryLadderHighlight");
-            thisBefore = this_;
-
-
-            var data;
-            for(i in dataset) {
-                if(countryName == dataset[i].NAME) {
-                    data = dataset[i];
-                }
-            }
-
-
-            fillTab2WithStats(data);
-        });
-    }
-
-} ,time)
-
+    countryClick(e,1);
 
 });
 
