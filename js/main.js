@@ -167,7 +167,8 @@ var tabContainer = section.find(".tab-container"),
     etab1 = tabContainer.find("a:first").attr("href"),
     etab2 = tabContainer.find("a:last").attr("href"),
     svgTab1 = section.find("svg:first"),
-    svgTab2 = section.find("svg:last");
+    svgTab2 = section.find("svg:last"),
+    arrow = section.find(".tab-container-arrow_1");
 
 tabContainer.easytabs();
 
@@ -187,6 +188,8 @@ tab1.click(function(){
     }
     tab1.attr("value","0");
     isStart = false;
+
+    arrow.removeClass("tab-container-arrow_1_vis"); // Remove the scroll down arrow
 });
 
 tab2.click(function(){
@@ -196,6 +199,7 @@ tab2.click(function(){
         statisticsTabMouseOver(svgTab2);
     textTabMouseOut(svgTab1);
     tab2.attr("value","0");
+
 });
 }
 
@@ -473,10 +477,18 @@ $(".chapter").click(function() {
     $('html, body').animate({
         scrollTop: bottom
     }, 1000);
-
 });
 
+var chapters = $(".chapters").find("span");
 
+for(var i=0; i<chapters.length; i++) {
+    $(chapters[i]).tooltipster({
+        content: $('<span>' + $(chapters[i]).attr("value") + '</span>'),
+        offsetX:15,
+        offsetY:-5,
+        hideOnClick:true
+    });
+}
 
 
 // ###################
@@ -489,18 +501,46 @@ $(".curtainContentTabInner").mCustomScrollbar({
     axis:"y",
     scrollbarPosition: "inside",
     mouseWheel:{ 
-        preventDefault: false 
+        preventDefault: false
     },
+    callbacks:{
+        onTotalScroll:function(){
+            $(".tab-container-arrow_1"+" img").attr("src","images/svg/arrow_up_thin.svg");
+            tabContainerScroll(1);
+    },
+        onTotalScrollBack:function(){
+            $(".tab-container-arrow_1"+" img").attr("src","images/svg/arrow_down_thin.svg");
+            tabContainerScroll(0);
+    }
+}
 });
+
+
 $(".countryLadderContainer").mCustomScrollbar({
 
     mouseWheel:{ 
-        preventDefault: true 
+        preventDefault: true, 
+        enable: false 
     },
     advanced: {
         updateOnContentResize: true
     }
 });
+
+function tabContainerScroll(scrollFlag){
+
+    var scrollTo;
+    if(scrollFlag == 0)
+        scrollTo = "bottom";
+    else
+        scrollTo = "top";
+
+    $(".tab-container-arrow_1").click(function() {
+        $(".curtainContentTabInner").mCustomScrollbar("scrollTo",scrollTo)
+    });   
+};
+tabContainerScroll(0);
+
 
 $(".curtainContentTabInner").mCustomScrollbar("disable"); // Start disabled to prevent scrolling issues
 $(".countryLadderContainer").mCustomScrollbar("disable");
@@ -537,15 +577,20 @@ var mapId = section.find(".map").attr("id"),
     resizeMapButton = section.find(".resizeMapButton"),
     searchBarButton = section.find(".mapSearchBarButton"),
     searchBar = section.find(".mapSearchBar"),
-    statisticsTab = section.find(".tabCountries");
+    statisticsTab = section.find(".tabCountries"),
+    arrow = section.find(".tab-container-arrow_1");
 
 
 var tabContainer = section.find(".tab-container"),
     tab1 = tabContainer.find(".tabs1"),
     tab2 = tabContainer.find(".tabs2");
 
-var dataset = parseJSON("json/co2_emissions_new.json");
 
+var data = section.attr("mapData");
+// if(data)
+    var dataset = parseJSON(data);
+
+console.log(data);
 
 // The mapId is the root to its tiles
 
@@ -582,7 +627,7 @@ $("#" + mapId).mousemove(function(e) {
 
 window["utfGrid_" + mapId].on('mouseover', function(e) {
 
-    var value = e.data[2011],
+    var value = e.data.INDEX.toFixed(2),
         color = setColor(value),
         isoCode = e.data.ISO3; 
 
@@ -604,6 +649,78 @@ $("#" + mapId).on('mouseout', function(e) {
 });
 
 
+function relVal(val) {
+    return (100/6)*val
+};
+function barColor(val) {
+    if(val <= 1)
+        return '#1a9850';
+    else if(val <= 2)
+        return '#66bd63';
+    else if(val <= 3) 
+        return '#a6d96a';
+    else if(val <= 4)
+        return '#fee08b';
+    else if(val <= 5) 
+        return '#fdae61';
+    else if(val <= 6) 
+        return '#d63a27';
+    else
+        return 0;   
+};
+function fillTab1WithStats(data) {
+        var value = data.INDEX,
+        color = setColor(value),
+        iso3_code = data.ISO3,
+        sortParam = "REAL";
+        rank = getRank(dataset,iso3_code, sortParam),
+        countryNumber = countCountries(dataset);
+
+        countryName1.text(data.NAME);
+        score1.text(value);
+        score1.css({color:color});
+        rank1.text(rank);
+        rank1.css({color:color});
+        totalScore1.text(countryNumber);
+        flagBar1.html('<img src="images/flags/' + iso3_code + '.png">');
+
+        // Full Stats
+     
+        var fullStats = section.find("[secClass='fullStatsFirst']"),
+            fullStatsBar = fullStats.find(".fullStatsBarInner") 
+            fullStatsValFields = fullStats.find(".val");
+
+
+        var bar1 = $(fullStatsBar[0]),
+            bar2 = $(fullStatsBar[1]),
+            bar3 = $(fullStatsBar[2]),
+            bar4 = $(fullStatsBar[3]),
+            bar5 = $(fullStatsBar[4]);
+        var val1 = data.INDEX.toFixed(2),
+            val2 = 0.25,
+            val3 = 4.25,
+            val4 = 2.8,
+            val5 = 1.2;
+        var valField1 = $(fullStatsValFields[0]),
+            valField2 = $(fullStatsValFields[1]), 
+            valField3 = $(fullStatsValFields[2]), 
+            valField4 = $(fullStatsValFields[3]), 
+            valField5 = $(fullStatsValFields[4]);
+
+        bar1.css({width:relVal(val1)+"%", "backgroundColor": barColor(val1)});
+        bar2.css({width:relVal(val2)+"%", "backgroundColor": barColor(val2)});
+        bar3.css({width:relVal(val3)+"%", "backgroundColor": barColor(val3)}); 
+        bar4.css({width:relVal(val4)+"%", "backgroundColor": barColor(val4)}); 
+        bar5.css({width:relVal(val5)+"%", "backgroundColor": barColor(val5)});
+
+
+        valField1.text(val1);
+        valField2.text(val2);
+        valField3.text(val3);
+        valField4.text(val4);
+        valField5.text(val5);
+
+};
 
 // Click
 window["utfGrid_" + mapId].on('click', function (e) {
@@ -616,24 +733,18 @@ if(statisticsTab.is(":hidden"))
 else
     time = 0;
 
+
 setTimeout(function() {
 
     if (e.data) {
 
-        var value = e.data[2011],
-            color = setColor(value),
-            iso3_code = e.data.ISO3,
-            rank = getRank(dataset,iso3_code),
-            countryNumber = countCountries(dataset);
+        var iso3_code = e.data.ISO3;
 
-            countryName1.text(e.data.NAME);
-            score1.text(value);
-            score1.css({color:color});
-            rank1.text(rank);
-            rank1.css({color:color});
-            totalScore1.text(countryNumber);
 
-        var sortedDataset = getSortedDataset(dataset);
+        fillTab1WithStats(e.data);
+
+        var sortParam = "REAL";
+        var sortedDataset = getSortedDataset(dataset, sortParam);
         var ladder ="",
             rank = 1,
             highlight = "transparent",
@@ -643,45 +754,79 @@ setTimeout(function() {
             scrollTo = "";
 
 
-        for(i in sortedDataset) {
-            if(sortedDataset[i][2011] !== 0) {
 
-                var iso3_code_for_ladder = sortedDataset[i].ISO3; 
+        for(i in sortedDataset) {
+            if(sortedDataset[i][sortParam] !== -999.99) {
+
+                var iso3_code_for_ladder = sortedDataset[i].ISO3;
+
+                if(sortedDataset[i][sortParam] == 0) {
+                    var toFixedValue = 1;
+                } else {
+                    var toFixedValue = 3;
+                }
 
                 if(sortedDataset[i].ISO3 === iso3_code) {
-                    highlight = "grey";
                     idToScroll = "countryToScroll_" + mapId;
                     scrollTo = "#" + idToScroll;
                     rankToScroll = rank;
                 } else {
-                    highlight = "transparent";
                     idToScroll = "";
                 }
 
-                ladder += "<tr id='" + idToScroll + "' style='background-color:" + highlight + "'>" + 
+                var value = sortedDataset[i][sortParam].toFixed(toFixedValue); 
+
+                ladder += "<tr id='" + idToScroll + "'>" + 
                                    "<td>" + "<img height='14' width='22' src='images/flags/" + iso3_code_for_ladder + ".png'>" + "</td>" + 
-                                   "<td>" + sortedDataset[i][2011].toFixed(3) + "</td>" +
-                                   "<td>" + sortedDataset[i].NAME + "</td>" +
+                                   "<td>" + Math.round(value * 1000) / 1000 + "</td>" +
+                                   "<td class='tableName'>" + sortedDataset[i].NAME + "</td>" +
                                    "<td>" + rank + "</tr>"; 
                 rank++;
-            }
-              
+            }             
         }
 
-        countryLadder1.html(ladder);
-        flagBar1.html('<img src="images/flags/' + iso3_code + '.png">'); 
+        countryLadder1.html(ladder); 
 
 
         setTimeout(function() {
-            countryLadderContainer1.mCustomScrollbar("scrollTo", scrollTo);           
+            countryLadderContainer1.mCustomScrollbar("scrollTo", scrollTo);
+            $(scrollTo).addClass("countryLadderHighlight");           
         }, time)
 
+        var trLadder1 = countryLadderContainer1.find("tr");
 
+        var thisBefore = $(scrollTo);
+        trLadder1.click(function() {
+
+            if(thisBefore)
+                thisBefore.removeClass("countryLadderHighlight");
+
+
+            var this_ = $(this),
+                countryName = this_.find(".tableName").text();
+
+            addMarker(countryName); 
+            $(countryLadderContainer1).mCustomScrollbar("scrollTo",this_);
+            this_.addClass("countryLadderHighlight");
+            thisBefore = this_;
+
+
+            var data;
+            for(i in dataset) {
+                if(countryName == dataset[i].NAME) {
+                    data = dataset[i];
+                }
+            }
+
+
+            fillTab1WithStats(data);
+        });
+            
+            arrow.addClass("tab-container-arrow_1_vis");
     }
 
     } ,time)
 
-mapClickFlag = 1;
 
 });
 
@@ -697,25 +842,70 @@ if(statisticsTab.is(":hidden"))
 else
     time = 0;
 
+function fillTab2WithStats(data) {
 
-setTimeout(function() {
+        var value = data.INDEX,
+        color = setColor(value),
+        iso3_code = data.ISO3,
+        sortParam = "REAL";
+        rank = getRank(dataset,iso3_code, sortParam),
+        countryNumber = countCountries(dataset);
 
-    if (e.data) {
-        var value = e.data[2011],
-            color = setColor(value),
-            iso3_code = e.data.ISO3,
-            rank = getRank(dataset,iso3_code),
-            countryNumber = countCountries(dataset);
-
-
-        countryName2.text(e.data.NAME);
+        countryName2.text(data.NAME);
         score2.text(value);
         score2.css({color:color});
         rank2.text(rank);
         rank2.css({color:color});
         totalScore2.text(countryNumber);
+        flagBar2.html('<img src="images/flags/' + iso3_code + '.png">');
+
+        // Full Stats
+     
+        var fullStats = section.find("[secClass='fullStatsSecond']"),
+            fullStatsBar = fullStats.find(".fullStatsBarInner") 
+            fullStatsValFields = fullStats.find(".val");
 
 
+
+        var bar1 = $(fullStatsBar[0]),
+            bar2 = $(fullStatsBar[1]),
+            bar3 = $(fullStatsBar[2]),
+            bar4 = $(fullStatsBar[3]),
+            bar5 = $(fullStatsBar[4]);
+        var val1 = data.INDEX,
+            val2 = 0.25,
+            val3 = 4.25,
+            val4 = 2.8,
+            val5 = 1.2;
+        var valField1 = $(fullStatsValFields[0]),
+            valField2 = $(fullStatsValFields[1]), 
+            valField3 = $(fullStatsValFields[2]), 
+            valField4 = $(fullStatsValFields[3]), 
+            valField5 = $(fullStatsValFields[4]);
+
+        bar1.css({width:relVal(val1)+"%", "backgroundColor": barColor(val1)});
+        bar2.css({width:relVal(val2)+"%", "backgroundColor": barColor(val2)});
+        bar3.css({width:relVal(val3)+"%", "backgroundColor": barColor(val3)}); 
+        bar4.css({width:relVal(val4)+"%", "backgroundColor": barColor(val4)}); 
+        bar5.css({width:relVal(val5)+"%", "backgroundColor": barColor(val5)});
+
+
+        valField1.text(val1);
+        valField2.text(val2);
+        valField3.text(val3);
+        valField4.text(val4);
+        valField5.text(val5);
+}
+
+setTimeout(function() {
+
+    if (e.data) {
+
+        var iso3_code = e.data.ISO3;
+
+        fillTab2WithStats(e.data);
+
+        var sortParam = "REAL";
         var sortedDataset = getSortedDataset(dataset);
         var ladder ="",
             rank = 1,
@@ -727,29 +917,33 @@ setTimeout(function() {
 
 
         for(i in sortedDataset) {
-            if(sortedDataset[i][2011] !== 0) {
-
+            if(sortedDataset[i][sortParam] !== -999.99) {
 
             var iso3_code_for_ladder = sortedDataset[i].ISO3; 
 
+            if(sortedDataset[i][sortParam] == 0) {
+                var toFixedValue = 1;
+            } else {
+                var toFixedValue = 3;
+            }
+
                 if(sortedDataset[i].ISO3 === iso3_code) {
-                    highlight = "grey";
                     idToScroll = "countryToScroll2_" + mapId;
                     scrollTo = "#" + idToScroll;
                     rankToScroll = rank;
                 } else {
-                    highlight = "transparent";
                     idToScroll = "";
                 }
 
-                ladder += "<tr id='" + idToScroll + "' style='background-color:" + highlight + "'>" + 
+                var value = sortedDataset[i][sortParam].toFixed(toFixedValue); 
+
+                ladder += "<tr id='" + idToScroll + "'>" + 
                                    "<td>" + "<img height='14' width='22' src='images/flags/" + iso3_code_for_ladder + ".png'>" + "</td>" + 
-                                   "<td>" + sortedDataset[i][2011].toFixed(3) + "</td>" +
-                                   "<td>" + sortedDataset[i].NAME + "</td>" +
+                                   "<td>" + Math.round(value * 1000) / 1000 + "</td>" +
+                                   "<td class='tableName'>" + sortedDataset[i].NAME + "</td>" +
                                    "<td>" + rank + "</tr>"; 
                 rank++;
-            }
-              
+            }             
         }
 
         countryLadder2.html(ladder);
@@ -757,9 +951,39 @@ setTimeout(function() {
 
 
         setTimeout(function() {
-            countryLadderContainer2.mCustomScrollbar("scrollTo", scrollTo);           
+            countryLadderContainer2.mCustomScrollbar("scrollTo", scrollTo);
+            $(scrollTo).addClass("countryLadderHighlight");             
         }, time);
 
+        var trLadder2 = countryLadderContainer2.find("tr");
+
+        var thisBefore = $(scrollTo);
+
+        trLadder2.click(function() {
+
+             if(thisBefore)
+                 thisBefore.removeClass("countryLadderHighlight");
+
+
+            var this_ = $(this),
+                countryName = this_.find(".tableName").text();
+
+            addMarker(countryName); 
+            $(countryLadderContainer2).mCustomScrollbar("scrollTo",this_);
+            this_.addClass("countryLadderHighlight");
+            thisBefore = this_;
+
+
+            var data;
+            for(i in dataset) {
+                if(countryName == dataset[i].NAME) {
+                    data = dataset[i];
+                }
+            }
+
+
+            fillTab2WithStats(data);
+        });
     }
 
 } ,time)
@@ -784,51 +1008,54 @@ var searchBarInput = section.find($('.mapSearchBar ' + "input"));
 var popupFlag;
 
 searchBarButton.click(function(){
-
-popupFlag = 0;
-
-var myIcon = L.icon({
-    iconUrl: 'images/map_marker.png',
-    iconSize: [20, 30],
-    iconAnchor: [10, 30],
+    var countryName = searchBarInput.val(); 
+    addMarker(countryName);
 });
 
-var value = searchBarInput.val();
-var foundFlag = 0;
-for(i in dataset) {
-    if(dataset[i].NAME == value) {
-        var lat = dataset[i].LAT, 
-            lng = dataset[i].LON,
-            name = dataset[i].NAME;
-            foundFlag = 1;
-    }
-}
 
-if(foundFlag) {
+function addMarker(countryName) {       
+    popupFlag = 0;
 
-    if(window["map_" + mapId].hasLayer(marker))
-        window["map_" + mapId].removeLayer(marker)
-
-    window["map_" + mapId].on('popupclose', function(e) {
-        if(popupFlag == 1)
-            window["map_" + mapId].removeLayer(marker)
+    var myIcon = L.icon({
+        iconUrl: 'images/map_marker.png',
+        iconSize: [20, 30],
+        iconAnchor: [10, 30],
     });
 
-    var popup = L.popup({offset:L.point(0, -25)})
-        .setLatLng([lat, lng])
-        .setContent('<h1>' + name + '</h1>')
-        .openOn(window["map_" + mapId]);
+    var foundFlag = 0;
+    for(i in dataset) {
+        if(dataset[i].NAME == countryName) {
+            var lat = dataset[i].LAT, 
+                lng = dataset[i].LON,
+                name = dataset[i].NAME;
+                foundFlag = 1;
+        }
+    }
 
-    marker = new L.marker([lat, lng], {icon: myIcon}); 
+    if(foundFlag) {
+
+        if(window["map_" + mapId].hasLayer(marker))
+            window["map_" + mapId].removeLayer(marker)
+
+        window["map_" + mapId].on('popupclose', function(e) {
+            if(popupFlag == 1)
+                window["map_" + mapId].removeLayer(marker)
+        });
+
+        var popup = L.popup({offset:L.point(0, -25)})
+            .setLatLng([lat, lng])
+            .setContent('<h1>' + name + '</h1>')
+            .openOn(window["map_" + mapId]);
+
+        marker = new L.marker([lat, lng], {icon: myIcon}); 
 
 
-    window["map_" + mapId].addLayer(marker)
-                          .setView([lat, lng]);
+        window["map_" + mapId].addLayer(marker)
+                              .setView([lat, lng]);
 
-popupFlag = 1;
-}
-});
-
+    popupFlag = 1;
+    }
+};
 
 
 var searchBarFlag = 0;
@@ -875,7 +1102,7 @@ function tagsForAutocomplete() {
 
 tagsForAutocompleteArr = [];
 
-    var dataset = parseJSON("json/co2_emissions_new.json");
+    var dataset = parseJSON("json/df.json");
 
         for(i in dataset) {
             tagsForAutocompleteArr.push(dataset[i].NAME);
@@ -885,25 +1112,21 @@ tagsForAutocompleteArr = [];
 }
 
 
-function setColor(value) {
-    if(value > 0 && value < 0.629)
+function setColor(val) {
+    if(val <= 1)
         return '#1a9850';
-    else if (value >= 0.629 && value < 1.792)
-        return  '#66bd63';
-    else if (value >= 1.792 && value < 3.325)
+    else if(val <= 2)
+        return '#66bd63';
+    else if(val <= 3) 
         return '#a6d96a';
-    else if (value >= 3.325 && value < 5.557)
-        return '#d9ef8b';
-    else if (value >= 5.557 && value < 8.8336)
+    else if(val <= 4)
         return '#fee08b';
-    else if (value >= 8.8336 && value < 14.136)
+    else if(val <= 5) 
         return '#fdae61';
-    else if (value >= 14.136 && value < 23.968)
-        return '#f46d43';
-    else if (value >= 23.968)
-        return '#d73027';
+    else if(val <= 6) 
+        return '#d63a27';
     else
-        return '#000000';
+        return 0; 
 }
 
 
@@ -1026,9 +1249,10 @@ var request = new XMLHttpRequest();
 
 // Sort the dataset
 
-function getSortedDataset(dataset) {
+function getSortedDataset(dataset,sortParam) {
+
     var sorted = dataset.sort(function(a, b) {
-            return a[2011] - b[2011];
+            return a[sortParam] - b[sortParam];
     }); 
 
     return sorted;
@@ -1037,10 +1261,10 @@ function getSortedDataset(dataset) {
 
 //// Get the ranking of the selected country
 
-function getRank(dataset, iso3_code) {
+function getRank(dataset, iso3_code, sortParam) {
 
 
-        var sortedDataset = getSortedDataset(dataset);
+        var sortedDataset = getSortedDataset(dataset, sortParam);
 
         return getObjectKeyIndex(sortedDataset, iso3_code)
 
@@ -1053,7 +1277,7 @@ function getRank(dataset, iso3_code) {
                     if (sortedDataset[elem].ISO3 == keyToFind) {
                         return i;
                     }
-                    if(sortedDataset[elem][2011] !== 0) { // Dont count noData elements(countries)
+                    if(sortedDataset[elem].INDEX !== -999.99) { // Dont count noData elements(countries)
                         i++;
                     }
             }
@@ -1068,12 +1292,84 @@ function countCountries(dataset) {
 
         var i = 1;
         for (elem in dataset) {
-                if(dataset[elem][2011] !== 0) { // Dont count noData elements(countries)
+                if(dataset[elem].INDEX !== -999.99) { // Dont count noData elements(countries)
                     i++;
                 }
         }
         return i;
     }
+
+
+// #####################
+// ##  Add Impressum  ##
+// #####################
+
+var impressumLogoFlag = 0;
+function impressumClick() {
+
+var time = 0;
+
+    if(impressumLogoFlag == 0) {
+
+        if($("#about").height() > 0) {
+            aboutLogoFlag = 0;
+            $("#about").removeClass("aboutVisible"); 
+            time = 200; // If one window is open wait till it slides in
+        }
+
+        setTimeout(function() {
+            $("#impressum").addClass("impressumVisible");
+            impressumLogoFlag = 1;            
+        },time);
+
+    } else {
+        $("#impressum").removeClass("impressumVisible");
+        impressumLogoFlag = 0;
+    }
+};
+
+$("#impressum_logo").click(function(){
+    impressumClick();
+});
+$("#impressumArrowUp").click(function(){
+    impressumClick();
+});
+
+
+// #################
+// ##  Add About  ##
+// #################
+
+var aboutLogoFlag = 0;
+function aboutClick() {
+
+var time = 0;
+
+    if(aboutLogoFlag == 0) {
+
+        if($("#impressum").height() > 0) {
+            impressumLogoFlag = 0;
+            $("#impressum").removeClass("impressumVisible"); 
+            time = 200; // If one window is open wait till it slides in
+        }
+
+        setTimeout(function() {
+            $("#about").addClass("aboutVisible");
+            aboutLogoFlag = 1;            
+        },time);
+
+    } else {       
+        $("#about").removeClass("aboutVisible");
+        aboutLogoFlag = 0;
+    }
+};
+
+$("#about_logo").click(function(){
+    aboutClick();
+});
+$("#aboutArrowUp").click(function(){
+    aboutClick();
+});
 
 
 });

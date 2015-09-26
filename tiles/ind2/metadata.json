@@ -1,11 +1,11 @@
 {
-    "description": "asdf", 
+    "description": "", 
     "center": "0,0,2", 
     "bounds": "-180,-85.0511,180,85.0511", 
     "minzoom": "0", 
     "version": "1.0.0", 
-    "template": "{{#__location__}}{{/__location__}}{{#__teaser__}}{{{1965}}} {{{1990}}} {{{2011}}} {{{FIPS}}} {{{ISO2}}} {{{ISO3}}} {{{UN}}} {{{NAME}}} {{{AREA}}} {{{POP2005}}} {{{REGION}}} {{{SUBREGION}}} {{{LON}}} {{{LAT}}} {{{Indicator}}} {{{Indicato_1}}}{{/__teaser__}}{{#__full__}}{{/__full__}}", 
+    "template": "{{#__location__}}{{/__location__}}{{#__teaser__}}{{{FIPS}}} {{{UN}}} {{{NAME}}} {{{AREA}}} {{{POP2005}}} {{{REGION}}} {{{SUBREGION}}} {{{LON}}} {{{LAT}}} {{{ISO3}}} {{{ISO2}}} {{{INDEX}}} {{{REAL}}}{{/__teaser__}}{{#__full__}}{{/__full__}}", 
     "maxzoom": "6", 
     "legend": "", 
-    "name": "asdf"
+    "name": "pop_below5m"
 }

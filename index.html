@@ -13,7 +13,7 @@
 <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300' rel='stylesheet' type='text/css'>
 
 <script src="js/jquery-1.11.3.min_velocity.js" type="text/javascript"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="js/less.js" type="text/javascript"></script>
 <script src="js/jquery.tooltipster.min.js"></script>
 <script src="js/skrollr.js"></script>
@@ -93,7 +93,7 @@ $('#preload').remove(); // Remove the div after de images are cached
 
 <!-- SLIDE 2 -->
 
-<section id="slide-2" class="homeSlideTall">
+<section id="slide-2" class="homeSlideTall" mapData ="json/df.json">
     <div class="bcg"
         data-bottom-top="background-position: 0px 5em"
         data-center="background-position: 0px 0%;"
@@ -136,20 +136,33 @@ $('#preload').remove(); // Remove the div after de images are cached
 					<li class='tab'><a href="#curtainContentStatisticsTab_slide2">Required JS</a></li>
 
 				</ul>
-			<div id="curtainContentTextTab_slide2" class="curtainContentTabInner">
-				<div id="curtainContentTextTabInner">
+			<div id="curtainContentTextTab_slide2" secClass="curtainContentTextTabInner">
+				<h2>Überschrift 2 blablabalabla</h2>
+				<div id="curtainContentTextTabInner" class="curtainContentTabInner">
 		        	<span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
 		        	</span>
 		        </div>
 			</div>
+
 			<div id="curtainContentStatisticsTab_slide2">
-			<div id="curtainContentStatisticsTabInner" class="curtainContentTabInner">
-				<div id="tabFirstCountry" class="tabCountries">
-					<div class="flagBar">
-						<div class="flagBarFlag1">
-							<img height="14" width="22" src="images/flags/YYY.png">
+				<div class="flagbarContainer">
+					<div class="flagBarContainer1">
+						<div class="flagBar">
+							<div class="flagBarFlag1">
+								<img height="14" width="22" src="images/flags/YYY.png">
+							</div>
 						</div>
 					</div>
+					<div class="flagBarContainer2">
+						<div class="flagBar">
+							<div class="flagBarFlag2">
+								<img height="14" width="22" src="images/flags/YYY.png">
+							</div>
+						</div>
+					</div>
+				</div>
+			<div id="curtainContentStatisticsTabInner" class="curtainContentTabInner">
+				<div id="tabFirstCountry" class="tabCountries">
 					<h1 class="tabFirstCountryName">Click to show<br> Country</h1>
 					<em class="cciScoreFirstCountry">--</em><span>CCI Score</span>
 					<div id="tabFirstCountryRank" class="tabCountryRank">
@@ -161,13 +174,64 @@ $('#preload').remove(); // Remove the div after de images are cached
 					<div class="countryLadderContainer" secClass="countryLadderContainerFirst">
 						<table class="tabFirstCountryLadder"></table>
 					</div>
+					<h3>Full Stats</h3>
+					<div class="fullStats" secClass="fullStatsFirst">
+						<table>
+							<tr>
+								<td class="ind">Indikator 1 (Lorem Ipsum)</td>
+								<td class="bar">
+									<div class="fullStatsBarContainer">
+										<div class="fullStatsBarInner">
+										</div>
+									</div>
+								</td>
+								<td class="val"></td>
+							</tr>
+							<tr>
+								<td class="ind">Indikator 2</td>
+								<td class="bar">
+									<div class="fullStatsBarContainer">
+										<div class="fullStatsBarInner">
+										</div>
+									</div>
+								</td>
+								<td class="val"></td>
+							</tr>
+							<tr>
+								<td class="ind">Indikator 3</td>
+								<td class="bar">
+									<div class="fullStatsBarContainer">
+										<div class="fullStatsBarInner">
+										</div>
+									</div>
+								</td>
+								<td class="val"></td>
+							</tr>
+							<tr>
+								<td class="ind">Indikator 4</td>
+								<td class="bar">
+									<div class="fullStatsBarContainer">
+										<div class="fullStatsBarInner">
+										</div>
+									</div>
+								</td>
+								<td class="val"></td>
+							</tr>
+							<tr>
+								<td class="ind">Indikator 5</td>
+								<td class="bar">
+									<div class="fullStatsBarContainer">
+										<div class="fullStatsBarInner">
+										</div>
+									</div>
+								</td>
+								<td class="val"></td>
+							</tr>
+						</table>
+					</div>
 				</div>
 				<div id="tabSecondCountry" class="tabCountries">
-					<div class="flagBar">
-						<div class="flagBarFlag2">
-							<img height="14" width="22" src="images/flags/YYY.png">
-						</div>
-					</div>
+
 					<h1 class="tabSecondCountryName">Rightclick to show Country</h1>
 					<em class="cciScoreSecondCountry">--</em><span>CCI Score</span>
 					<div id="tabSecondCountryRank" class="tabCountryRank">
@@ -179,11 +243,71 @@ $('#preload').remove(); // Remove the div after de images are cached
 					<div class ="countryLadderContainer" secClass="countryLadderContainerSecond">
 						<table class="tabSecondCountryLadder"></table>
 					</div>
+					<h3>Full Stats</h3>
+					<div class="fullStats" secClass="fullStatsSecond">
+						<table>
+							<tr>
+								<td class="ind">Indikator 1 (Lorem Ipsum)</td>
+								<td class="bar">
+									<div class="fullStatsBarContainer">
+										<div class="fullStatsBarInner">
+										</div>
+									</div>
+								</td>
+								<td class="val"></td>
+							</tr>
+							<tr>
+								<td class="ind">Indikator 2</td>
+								<td class="bar">
+									<div class="fullStatsBarContainer">
+										<div class="fullStatsBarInner">
+										</div>
+									</div>
+								</td>
+								<td class="val"></td>
+							</tr>
+							<tr>
+								<td class="ind">Indikator 3</td>
+								<td class="bar">
+									<div class="fullStatsBarContainer">
+										<div class="fullStatsBarInner">
+										</div>
+									</div>
+								</td>
+								<td class="val"></td>
+							</tr>
+							<tr>
+								<td class="ind">Indikator 4</td>
+								<td class="bar">
+									<div class="fullStatsBarContainer">
+										<div class="fullStatsBarInner">
+										</div>
+									</div>
+								</td>
+								<td class="val"></td>
+							</tr>
+							<tr>
+								<td class="ind">Indikator 5</td>
+								<td class="bar">
+									<div class="fullStatsBarContainer">
+										<div class="fullStatsBarInner">
+										</div>
+									</div>
+								</td>
+								<td class="val"></td>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>
 			</div>
+			<div class="tab-container-arrow_1">
+				<img src="images/svg/arrow_down_thin.svg"/>
 			</div>
-
+<!-- 			<div class="tab-container-arrow_2">
+				<img src="images/svg/arrow_down_thin.svg"/>
+			</div> -->
+			</div>
        	</div>
 
        		<!-- map -->
@@ -230,7 +354,7 @@ $('#preload').remove(); // Remove the div after de images are cached
 
 <!-- SLIDE 3 -->
 
-<section id="slide-3" class="homeSlideTall">
+<section id="slide-3" class="homeSlideTall" mapData ="json/co2_emissions.json">
     <div class="bcg"
         data-bottom-top="background-position: 0px 5em"
         data-center="background-position: 0px 0%;"
@@ -368,7 +492,7 @@ $('#preload').remove(); // Remove the div after de images are cached
 
 <!-- SLIDE 4 -->
 
-<section id="slide-4" class="homeSlideTall">
+<section id="slide-4" class="homeSlideTall" mapData ="json/df.json">
     <div class="bcg"
         data-bottom-top="background-position: 0px 5em"
         data-center="background-position: 0px 0%;"
@@ -445,20 +569,67 @@ $('#preload').remove(); // Remove the div after de images are cached
 <div id="headerSlideContainer" class="slideHeader">
 	<div id="headerSlideContent">
 		<div class="chapters">
-			<span id="chapter1" class="chapter">I</span>
-			<span id="chapter2" class="chapter">II</span>
-			<span id="chapter3" class="chapter">III</span>
-			<span id="chapter4" class="chapter">IV</span>
-			<span id="chapter5" class="chapter">V</span>
+			<span id="chapter1" class="chapter" value="Indikator 1">I</span>
+			<span id="chapter2" class="chapter" value="Indikator 2">II</span>
+			<span id="chapter3" class="chapter" value="Indikator 3">III</span>
+			<span id="chapter4" class="chapter" value="Indikator 4">IV</span>
+			<span id="chapter5" class="chapter" value="Indikator 5">V</span>
 		</div>
 	</div>
 </div>
 
-<!-- TOOLTIP FOR MAP -->
 
+<!-- TOOLTIP FOR MAP -->
 
 <div id="mapTooltip">
 	<div id="mapTooltipContent"></div>
+</div>
+
+
+<!-- ABOUT -->
+
+<div id="impressum">
+	<div id="impressumContent">
+		<div id="impressumContentInner">
+			<div id="impressumContentInnerInner">
+				<div id="impressumHeader"><span><i>Impressum</i></span></div>
+				<div id="impressumContentLeft" style="float:left;">
+					<h1>Design&Application<h1>
+					<h2>Manuel Strohmaier</h2>
+					<p>8121 Deutschfeistritz</p>
+					<p>Murgasse 5</p>
+					<p>Austria</p>
+					<a href="mailto:prayer007@gmx.net" class ="impressumEmail">eMail: prayer007@gmx.net</a>
+				</div>
+				<div id="impressumContentRight" style="float:right;">
+					<h1>Content<h1>
+					<h2>Lukas Reichenfelser</h2>
+					<p>-</p>
+					<p>-</p>
+					<p>-</p>
+					<p>-</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="impressumArrowUp"></div>
+</div>
+
+
+<!-- IMPRESSUM -->
+
+<div id="about">
+	<div id="aboutContent">
+		<div id="aboutContentInner">
+			<div id="aboutContentInnerInner">
+				<div id="aboutHeader"><span><i>About</i></span></div>
+				<div id="aboutText">
+					eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet					
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="aboutArrowUp"></div>
 </div>
 
 </body>
